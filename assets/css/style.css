@@ -1,0 +1,39 @@
+body {
+  font-family: Helvetica, Arial, Verdana, Tahoma, sans-serif;
+  background-color: #121212;
+  color: #f2f2f2;
+
+}
+
+.header {
+  height: 6rem;
+  width: 100%;
+}
+
+.navbar {
+  position: absolute;
+  right: 2rem;
+}
+
+#navbarName {
+  color: #f2f2f2;
+  padding-left: 12px;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+li {
+  float: left;
+}
+
+li a {
+  display: block;
+  color: #f2f2f2;
+  padding: 2rem;
+  text-decoration: none;
+}
