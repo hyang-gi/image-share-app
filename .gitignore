@@ -1,3 +1,7 @@
+#Folders
+
+/sql
+
 # VSCode
 .vscode/*
 !.vscode/settings.json
