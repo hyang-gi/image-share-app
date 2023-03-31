@@ -108,7 +108,7 @@ a {
   text-decoration: none;
 }
 
-button:hover {
+.submit:hover {
   color: var(--light);
   background: var(--secondary);
 }
