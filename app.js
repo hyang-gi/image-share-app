@@ -11,6 +11,14 @@ app.use(express.static(path.join(__dirname, "./assets")));
 app.get("/", (req, res) => {
     return res.render("templates") });
 
+app.get("/login", (req, res) => {
+    return res.render("pages/login.ejs");
+});
+
+app.get("/register", (req, res) => {
+    return res.render("pages/registration.ejs");
+});
+
 
 app.get("/hi/:personName/:personLastName", (req, res) => {
     const name = req.params.personName;
