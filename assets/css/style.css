@@ -3,14 +3,14 @@
   --secondary: #1B998B;
   --tertiary: #FF579F;
   --light: #F2F2F2;
+  --bg: #EDE6E3;
   --dark: #121212;
 }
 
 body {
   font-family: Lato, Arial, Verdana, Tahoma, sans-serif;
-  background-color: var(--light);
+  background-color: var(--bg);
   color: var(--dark);
-
 }
 
 .header {
