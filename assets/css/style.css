@@ -60,6 +60,9 @@ li a {
   color: var(--light);
 }
 
+li a {
+  color: var(--dark);
+} 
 .login-container, .register-container {
   text-align: center;
   background-color: var(--primary);
