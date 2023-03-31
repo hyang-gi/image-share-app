@@ -1,7 +1,15 @@
+:root {
+  --primary: #7E52A0;
+  --secondary: #1B998B;
+  --tertiary: #FF579F;
+  --light: #F2F2F2;
+  --dark: #121212;
+}
+
 body {
-  font-family: Helvetica, Arial, Verdana, Tahoma, sans-serif;
-  background-color: #121212;
-  color: #f2f2f2;
+  font-family: Lato, Arial, Verdana, Tahoma, sans-serif;
+  background-color: var(--light);
+  color: var(--dark);
 
 }
 
@@ -16,8 +24,13 @@ body {
 }
 
 #navbarName {
-  color: #f2f2f2;
   padding-left: 12px;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
 }
 
 ul {
@@ -33,7 +46,69 @@ li {
 
 li a {
   display: block;
-  color: #f2f2f2;
   padding: 2rem;
   text-decoration: none;
+}
+
+/* Sign-up, Sign-in Styles */
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  color: var(--light);
+}
+
+.login-container, .register-container {
+  text-align: center;
+  background-color: var(--primary);
+  padding: 2rem;
+  border-radius: 4px;
+  width: 20rem;
+}
+
+.input-box {
+  box-sizing: border-box;
+  width: 100%;
+  display: flex;
+  padding: 1rem;
+  margin-bottom: 2rem;
+  width: 100%;
+  border-radius: 0.5rem;
+  border: none;
+}
+
+button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  margin: 1rem auto;
+  color: #0E1114;
+  font-size: 1.2rem;
+  background: var(--light);
+  border-radius: 0.5rem;
+  border: none;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.submit, .button-navigate {
+  width: 100%;
+}
+
+.button-navigate {
+  background-color: var(--tertiary);
+  color: var(--light);
+}
+
+a {
+  color: var(--light);
+  text-decoration: none;
+}
+
+button:hover {
+  color: var(--light);
+  background: var(--secondary);
 }
