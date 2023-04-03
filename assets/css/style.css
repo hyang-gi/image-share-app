@@ -50,6 +50,10 @@ li a {
   text-decoration: none;
 }
 
+li a:hover {
+  color: var(--secondary);
+}
+
 /* Sign-up, Sign-in Styles */
 
 .wrapper {
