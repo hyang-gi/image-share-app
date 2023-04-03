@@ -6,17 +6,26 @@ const PORT = 5000;
 let app = express();
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "./views"));
+app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "./assets")));
 
 app.get("/", (req, res) => {
     return res.render("templates") });
 
 app.get("/login", (req, res) => {
-    return res.render("pages/login.ejs");
+
+    return res.render("templates/authentication.ejs", {
+        page: "../pages/login.ejs",
+        title: "Login",
+      });
+    // return res.render("pages/login.ejs");
 });
 
 app.get("/register", (req, res) => {
-    return res.render("pages/registration.ejs");
+    return res.render("templates/authentication.ejs", {
+        page: "../pages/registration.ejs",
+        title: "Login",
+      });
 });
 
 
