@@ -15,3 +15,10 @@ The application must comprise the following features:
 * It will allow all users (logged-in and not logged-in) to browse all images that have been uploaded
 * It will allow all users to view a particular image and to see the date that the image was uploaded, the name of the user who uploaded it, how many likes it has received and any comments that have been posted about that image
 
+
+### Development Process
+
+* Set up the databases using MySql
+* Create static pages 
+* Add routes for the required pages
+* Login and Password authorisation checks
