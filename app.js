@@ -38,6 +38,14 @@ app.get("/register", (req, res) => {
     });
 });
 
+app.post("/register", (req, res) => {
+    console.log(req);
+});
+
+app.post("/login", (req, res) => {
+    console.log(req);
+})
+
 app.get("/users", (req, res) => {
     //return res.render("pages/users.ejs");
     return res.render("templates/index.ejs", {
