@@ -1,6 +1,7 @@
 const express = require("express");
 const path = require("path");
 const ejs = require("ejs");
+const bcrypt = require("bcrypt");
 const PORT = 5000;
 
 const mysql = require("mysql2");
@@ -25,6 +26,8 @@ function onConnectionReady(err) {
         console.log("connection ready!", `Error? ${err}`);
     }
 }
+
+const users = [];
 
 let app = express();
 app.set("view engine", "ejs");
@@ -61,8 +64,22 @@ app.get("/register", (req, res) => {
     });
 });
 
-app.post("/register", (req, res) => {
-    console.log(req);
+app.post("/register", async (req, res) => {
+    //console.log(req);
+    try {
+        const hashedPassword = await bcrypt.hash(req.body.user_password, 10);
+        users.push({
+            id: Date.now().toString(),
+            name: req.body.username,
+            email: req.body.user_email,
+            password: hashedPassword
+        });
+        res.redirect('/login');
+
+    } catch {
+        res.redirect('/login')
+    }
+    console.log(users);
 });
 
 app.post("/login", (req, res) => {
