@@ -3,6 +3,29 @@ const path = require("path");
 const ejs = require("ejs");
 const PORT = 5000;
 
+const mysql = require("mysql2");
+const dotenv = require("dotenv");
+dotenv.config();
+
+const DBCONFIG = {
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    user: process.env.DB_USERNAME,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_DATABASE,
+};
+
+let connection = mysql.createConnection(DBCONFIG);
+connection.connect(onConnectionReady);
+
+function onConnectionReady(err) {
+    if (err != null) {
+        console.error(err);
+    } else {
+        console.log("connection ready!", `Error? ${err}`);
+    }
+}
+
 let app = express();
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "./views"));
