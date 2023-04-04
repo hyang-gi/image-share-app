@@ -10,14 +10,15 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "./assets")));
 
 app.get("/", (req, res) => {
-    return res.render("templates") });
+    return res.render("templates");
+});
 
 app.get("/login", (req, res) => {
 
     return res.render("templates/authentication.ejs", {
         page: "../pages/login.ejs",
         title: "Login",
-      });
+    });
     // return res.render("pages/login.ejs");
 });
 
@@ -25,15 +26,23 @@ app.get("/register", (req, res) => {
     return res.render("templates/authentication.ejs", {
         page: "../pages/registration.ejs",
         title: "Login",
-      });
+    });
 });
 
+app.get("/users", (req, res) => {
+    //return res.render("pages/users.ejs");
+    return res.render("templates/index.ejs", {
+        page: "../pages/users.ejs",
+        title: "Users",
+    })
+});
 
+//testing code, delete after
 app.get("/hi/:personName/:personLastName", (req, res) => {
     const name = req.params.personName;
     const lastName = req.params.personLastName;
     return res.render("templates", { data: { name, lastName } });
-  });
+});
 
 app.listen(PORT, () => {
     console.log(`Server listening on Port: ${PORT}`);

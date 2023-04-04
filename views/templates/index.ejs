@@ -17,5 +17,12 @@
             </ul>
         </nav>
     </header>
+    <div class="wrapper">
+      <% if(locals.page){ %>
+        <%- include(page) %>
+        <%} else { %>
+        <p>No page selected</P>
+        <%}%>
+    </div>
   </body>
 </html>

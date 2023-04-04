@@ -54,6 +54,10 @@ li a:hover {
   color: var(--secondary);
 }
 
+#user-list {
+  color: var(--dark)
+}
+
 /* Sign-up, Sign-in Styles */
 
 .wrapper {
