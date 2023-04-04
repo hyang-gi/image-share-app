@@ -1,8 +1,13 @@
+const PORT = 5000;
 const express = require("express");
 const path = require("path");
 const ejs = require("ejs");
 const bcrypt = require("bcrypt");
-const PORT = 5000;
+const passport = require("passport");
+const initPassport = require("./passport-config");
+
+initPassport(passport);
+
 
 const mysql = require("mysql2");
 const dotenv = require("dotenv");
