@@ -1,6 +1,7 @@
 #Folders
 
 /sql
+.env
 
 # VSCode
 .vscode/*
