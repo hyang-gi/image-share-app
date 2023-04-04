@@ -22,6 +22,15 @@ app.get("/login", (req, res) => {
     // return res.render("pages/login.ejs");
 });
 
+app.get("/logout", (req, res) => {
+
+    return res.render("templates/authentication.ejs", {
+        page: "../pages/logout.ejs",
+        title: "Login",
+    });
+    // return res.render("pages/login.ejs");
+});
+
 app.get("/register", (req, res) => {
     return res.render("templates/authentication.ejs", {
         page: "../pages/registration.ejs",
