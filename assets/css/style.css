@@ -54,10 +54,6 @@ li a:hover {
   color: var(--secondary);
 }
 
-#user-list {
-  color: var(--dark)
-}
-
 .sticker {
   width: 55%;
   margin-bottom: 1rem;
@@ -69,13 +65,13 @@ li a:hover {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  color: var(--light);
 }
 
 li a {
   color: var(--dark);
 } 
 .login-container, .register-container, .logout-container {
+  color: var(--light);
   text-align: center;
   background-color: var(--primary);
   padding: 2rem;
