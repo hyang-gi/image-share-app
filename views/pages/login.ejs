@@ -2,7 +2,7 @@
     <div class="title">
         <span>Login To Your Account</span>
     </div>
-    <% if (messages.error) { %>
+    <% if (locals.messages && messages.error) { %>
         <%= messages.error %>
       <% } %>
     <form method="POST" action="/login">
