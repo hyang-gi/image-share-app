@@ -1,0 +1,34 @@
+{
+  "name": "image-share-app",
+  "version": "1.0.0",
+  "description": "The above linked application has been developed for the second semester final assignment for Programming for Digital Media module.",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hyang-gi/image-share-app.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hyang-gi/image-share-app/issues"
+  },
+  "homepage": "https://github.com/hyang-gi/image-share-app#readme",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "dotenv": "^16.0.3",
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "express-flash": "^0.0.2",
+    "express-session": "^1.17.3",
+    "flash": "^1.1.0",
+    "method-override": "^3.0.0",
+    "mysql2": "^3.2.0",
+    "nodemon": "^2.0.21",
+    "passport": "^0.6.0",
+    "passport-local": "^1.0.0"
+  }
+}
