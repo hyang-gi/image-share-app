@@ -41,19 +41,12 @@ app.get("/", (req, res) => {
     return res.render("templates");
 });
 
+//authentication get requests
+
 app.get("/login", (req, res) => {
 
     return res.render("templates/authentication.ejs", {
         page: "../pages/login.ejs",
-        title: "Login",
-    });
-    // return res.render("pages/login.ejs");
-});
-
-app.get("/logout", (req, res) => {
-
-    return res.render("templates/authentication.ejs", {
-        page: "../pages/logout.ejs",
         title: "Login",
     });
     // return res.render("pages/login.ejs");
@@ -65,6 +58,22 @@ app.get("/register", (req, res) => {
         title: "Login",
     });
 });
+
+app.get("/logout", (req, res) => {
+
+    return res.render("templates/authentication.ejs", {
+        page: "../pages/logout.ejs",
+        title: "Login",
+    });
+    // return res.render("pages/login.ejs");
+});
+
+
+//authentication post requests
+
+app.post("/login", (req, res) => {
+    //  console.log(req);
+  })
 
 app.post("/register", async (req, res) => {
     //console.log(req);
@@ -84,9 +93,7 @@ app.post("/register", async (req, res) => {
     console.log(users);
 });
 
-app.post("/login", (req, res) => {
-  //  console.log(req);
-})
+// other routes
 
 app.get("/users", (req, res) => {
     //return res.render("pages/users.ejs");
