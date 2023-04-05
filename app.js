@@ -4,9 +4,6 @@ const path = require("path");
 const ejs = require("ejs");
 const bcrypt = require("bcrypt");
 const passport = require("passport");
-const initPassport = require("./passport-config");
-
-initPassport(passport);
 
 
 const mysql = require("mysql2");
@@ -88,7 +85,7 @@ app.post("/register", async (req, res) => {
 });
 
 app.post("/login", (req, res) => {
-    console.log(req);
+  //  console.log(req);
 })
 
 app.get("/users", (req, res) => {
