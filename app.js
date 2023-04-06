@@ -1,11 +1,11 @@
-/* Loading env variables */ 
+/* Loading env variables */
 
 if (process.env.NODE_ENV != "production") {
     const dotenv = require("dotenv");
     dotenv.config();
 }
 
-/* Initialising modules */ 
+/* Initialising modules */
 
 const PORT = 5000;
 const express = require("express");
@@ -14,6 +14,7 @@ const bcrypt = require("bcrypt");
 const passport = require("passport");
 const flash = require("flash");
 const session = require("express-session");
+const bodyParser = require("body-parser");
 
 const initializePassport = require('./passport-config');
 initializePassport(
@@ -22,7 +23,7 @@ initializePassport(
     id => users.find(user => user.id === id)
 );
 
-/* Configuring database set up */ 
+/* Configuring database set up */
 
 const mysql = require("mysql2");
 
@@ -47,7 +48,7 @@ function onConnectionReady(err) {
 
 const users = [];
 
-/* Middleware set up */ 
+/* Middleware set up */
 
 let app = express();
 app.set("view engine", "ejs");
@@ -64,11 +65,16 @@ app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
+
+/* Authentication GET requests */
+
 app.get("/", (req, res) => {
     return res.render("templates");
 });
-
-/* Authentication GET requests */ 
 
 app.get("/login", (req, res) => {
 
@@ -96,7 +102,7 @@ app.get("/logout", (req, res) => {
 });
 
 
-/* Authentication POST requests */ 
+/* Authentication POST requests */
 
 app.post("/login", passport.authenticate('local', {
     successRedirect: "/",
@@ -107,15 +113,30 @@ app.post("/login", passport.authenticate('local', {
 app.post("/register", async (req, res) => {
     //console.log(req);
     try {
+        const { user_display_name, username, user_email } = req.body;
         const hashedPassword = await bcrypt.hash(req.body.user_password, 10);
-        users.push({
-            id: Date.now().toString(), //automatically gen in database
-            name: req.body.user_display_name,
-            username: req.body.username,
-            email: req.body.user_email,
-            password: hashedPassword
+        const user_password = hashedPassword;
+        const user = { user_display_name, username, user_email, user_password };
+        console.log(user);
+        // users.push({
+        //     id: Date.now().toString(), //automatically gen in database
+        //     name: req.body.user_display_name,
+        //     username: req.body.username,
+        //     email: req.body.user_email,
+        //     password: hashedPassword
+        // });
+        connection.query("INSERT INTO users SET ?", user, (err, results) => {
+            if (err) {
+                console.error(err);
+                // res.status(500).send("Error creating user");
+                return res.redirect("/register");
+            } else {
+                console.log("User created successfully!");
+                // res.status(200).send("User created successfully");
+                return res.redirect('/login');
+            }
         });
-        res.redirect('/login');
+
     } catch {
         res.redirect('/register')
     }
@@ -131,7 +152,7 @@ app.post('/logout', function (req, res, next) {
     });
 });
 
-/* Other Routes */ 
+/* Other Routes */
 
 app.get("/users", (req, res) => {
     //return res.render("pages/users.ejs");
@@ -151,7 +172,7 @@ app.get("/hi/:personName/:personLastName", (req, res) => {
 
 */
 
-/* Setup Server */ 
+/* Setup Server */
 
 app.listen(PORT, () => {
     console.log(`Server listening on Port: ${PORT}`);
