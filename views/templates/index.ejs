@@ -15,8 +15,14 @@
         <li><a class="active" href="/">Home</a></li>
         <li><a href='/profile?user="id"'>Profile</a></li>
         <li><a href="/users">Users</a></li>
-        <li><form action="/logout?_method=DELETE" method="POST">
-          <button class="navbar-button" type="submit">Log Out</button></li>
+        <% if (!user) { %>
+          <li><a class="button-link" href="/login"><button class="navbar-button">Log in</button></a></li>
+          <% } else { %>
+            <li>
+              <form action="/logout?_method=DELETE" method="POST">
+                <button class="navbar-button" type="submit">Log Out</button>
+            </li>
+            <% } %>
       </ul>
     </nav>
   </header>

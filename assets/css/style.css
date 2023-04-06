@@ -58,6 +58,7 @@ li a:hover {
   width: 55%;
   margin-bottom: 1rem;
 }
+
 /* Sign-up, Sign-in Styles */
 
 .wrapper {
@@ -69,8 +70,11 @@ li a:hover {
 
 li a {
   color: var(--dark);
-} 
-.login-container, .register-container, .logout-container {
+}
+
+.login-container,
+.register-container,
+.logout-container {
   color: var(--light);
   text-align: center;
   background-color: var(--primary);
@@ -105,13 +109,18 @@ button {
   cursor: pointer;
 }
 
-.submit, .button-navigate {
+.submit,
+.button-navigate {
   width: 100%;
 }
 
 .button-navigate {
   background-color: var(--tertiary);
   color: var(--light);
+}
+
+.button-link {
+  padding: 0rem;
 }
 
 .navbar-button {

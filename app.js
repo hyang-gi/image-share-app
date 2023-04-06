@@ -78,6 +78,14 @@ app.use(passport.session());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+/* Check for user object */
+
+app.use((req, res, next) => {
+    res.locals.user = req.user;
+    next();
+});
+
+
 
 /* Authentication GET requests */
 
