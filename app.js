@@ -16,13 +16,6 @@ const flash = require("flash");
 const session = require("express-session");
 const bodyParser = require("body-parser");
 
-const initializePassport = require('./passport-config');
-initializePassport(
-    passport,
-    email => users.find(user => user.email === email),
-    id => users.find(user => user.id === id)
-);
-
 /* Configuring database set up */
 
 const mysql = require("mysql2");
@@ -45,6 +38,22 @@ function onConnectionReady(err) {
         console.log("connection ready!", `Error? ${err}`);
     }
 }
+
+
+async function getUserByEmail(email) {
+    console.log(email);
+    const [rows, fields] = await connection.promise().query('SELECT * FROM users WHERE user_email = ?', [email]);
+    console.log(rows[0]);
+    return rows[0];
+};
+
+const initializePassport = require('./passport-config');
+initializePassport(
+    passport,
+    // email => users.find(user => user.email === email),
+    // id => users.find(user => user.id === id)
+    email => getUserByEmail(email),
+);
 
 const users = [];
 
