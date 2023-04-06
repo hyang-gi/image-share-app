@@ -1,5 +1,9 @@
+/* Initialising Modules */ 
+
 const LocalStrategy = require("passport-local").Strategy;
 const bcrypt = require("bcrypt");
+
+/* Authentication Function */ 
 
 function initialize(passport, getUserByEmail, getUserById) {
     console.log("passport initialize works");

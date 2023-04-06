@@ -1,8 +1,11 @@
-//loading in env variables 
+/* Loading env variables */ 
+
 if (process.env.NODE_ENV != "production") {
     const dotenv = require("dotenv");
     dotenv.config();
 }
+
+/* Initialising modules */ 
 
 const PORT = 5000;
 const express = require("express");
@@ -19,6 +22,7 @@ initializePassport(
     id => users.find(user => user.id === id)
 );
 
+/* Configuring database set up */ 
 
 const mysql = require("mysql2");
 
@@ -43,6 +47,8 @@ function onConnectionReady(err) {
 
 const users = [];
 
+/* Middleware set up */ 
+
 let app = express();
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "./views"));
@@ -62,7 +68,7 @@ app.get("/", (req, res) => {
     return res.render("templates");
 });
 
-//authentication get requests
+/* Authentication GET requests */ 
 
 app.get("/login", (req, res) => {
 
@@ -90,7 +96,7 @@ app.get("/logout", (req, res) => {
 });
 
 
-//authentication post requests
+/* Authentication POST requests */ 
 
 app.post("/login", passport.authenticate('local', {
     successRedirect: "/",
@@ -125,7 +131,7 @@ app.post('/logout', function (req, res, next) {
     });
 });
 
-// other routes
+/* Other Routes */ 
 
 app.get("/users", (req, res) => {
     //return res.render("pages/users.ejs");
@@ -135,12 +141,17 @@ app.get("/users", (req, res) => {
     })
 });
 
-//testing code, delete after
+/* Testing Code, Delete Soon  
+
 app.get("/hi/:personName/:personLastName", (req, res) => {
     const name = req.params.personName;
     const lastName = req.params.personLastName;
     return res.render("templates", { data: { name, lastName } });
 });
+
+*/
+
+/* Setup Server */ 
 
 app.listen(PORT, () => {
     console.log(`Server listening on Port: ${PORT}`);
