@@ -15,7 +15,8 @@
         <li><a class="active" href="/">Home</a></li>
         <li><a href='/profile?user="id"'>Profile</a></li>
         <li><a href="/users">Users</a></li>
-        <li><a href="/logout">Log Out</a></li>
+        <li><form action="/logout?_method=DELETE" method="POST">
+          <button type="submit">Log Out</button></li>
       </ul>
     </nav>
   </header>

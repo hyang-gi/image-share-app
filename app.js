@@ -70,7 +70,7 @@ app.get("/login", (req, res) => {
         page: "../pages/login.ejs",
         title: "Login",
     });
-     //return res.render("pages/login.ejs");
+    //return res.render("pages/login.ejs");
 });
 
 app.get("/register", (req, res) => {
@@ -114,6 +114,15 @@ app.post("/register", async (req, res) => {
         res.redirect('/register')
     }
     console.log(users, "account created");
+});
+
+/* Delete Logged In Session */
+
+app.post('/logout', function (req, res, next) {
+    req.logout((err) => {
+        if (err) { return next(err); }
+        res.redirect('/logout');
+    });
 });
 
 // other routes
