@@ -21,6 +21,7 @@
             <li>
               <form action="/logout?_method=DELETE" method="POST">
                 <button class="navbar-button" type="submit">Log Out</button>
+              </form>
             </li>
             <% } %>
       </ul>
@@ -34,9 +35,7 @@
           <%}%>
   </div>
   <% if (user) { %>
-    <form action="/upload" method="POST">
-      <button class="upload-button">Upload Image</button>
-    </form>
+    <a href="/upload"><button class="upload-button">Upload Image</button></a>
     <% } %>
 </body>
 
