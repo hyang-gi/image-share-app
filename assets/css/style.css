@@ -114,6 +114,12 @@ button {
   color: var(--light);
 }
 
+.navbar-button {
+  background-color: var(--secondary);
+  color: var(--light);
+  font-size: 1rem;
+}
+
 a {
   color: var(--light);
   text-decoration: none;
