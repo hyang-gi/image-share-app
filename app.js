@@ -93,6 +93,10 @@ app.get("/", (req, res) => {
     return res.render("templates");
 });
 
+app.get("/upload", (req, res) => {
+   return res.end("upload route works!")
+})
+
 app.get("/login", (req, res) => {
 
     return res.render("templates/authentication.ejs", {

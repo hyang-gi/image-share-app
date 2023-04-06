@@ -34,7 +34,9 @@
           <%}%>
   </div>
   <% if (user) { %>
-    <button class="upload-button">Upload Image</button>
+    <form action="/upload" method="POST">
+      <button class="upload-button">Upload Image</button>
+    </form>
     <% } %>
 </body>
 
