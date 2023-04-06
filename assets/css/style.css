@@ -34,6 +34,10 @@ body {
   margin-bottom: 2rem;
 }
 
+.content {
+  margin-bottom: 1.5rem;
+}
+
 ul {
   list-style-type: none;
   margin: 0;
@@ -75,7 +79,7 @@ li a {
 
 .login-container,
 .register-container,
-.logout-container {
+.logout-container, .upload-img-container {
   color: var(--light);
   text-align: center;
   background-color: var(--primary);

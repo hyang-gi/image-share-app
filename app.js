@@ -94,7 +94,11 @@ app.get("/", (req, res) => {
 });
 
 app.get("/upload", (req, res) => {
-   return res.end("upload route works!")
+   console.log("upload route works!");
+   return res.render("templates", {
+    page: "../pages/uploadImage.ejs",
+    title: "Upload Image",
+});
 })
 
 app.get("/login", (req, res) => {

@@ -1,0 +1,15 @@
+<div class="upload-img-container">
+    <div class="title">
+        <span>Upload An Image</span>
+    </div>
+    <p>
+      <span class="content">Accepted file types are .jpg, .png, .gif, not exceeding 2MB in file size</span>
+      <% if (locals.messages && messages.error) { %>
+        <span class="error"><%= messages.error %></span>
+      <% } %>
+      </p>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+      <input type="file" name="pic" id="pic" />
+      <button class="submit" type="submit">Upload</button>
+    </form>
+  </div>
