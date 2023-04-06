@@ -90,15 +90,16 @@ app.use((req, res, next) => {
 /* Authentication GET requests */
 
 app.get("/", (req, res) => {
-    return res.render("templates");
+    return res.render("templates", { uploadDisplay: true });
 });
 
 app.get("/upload", (req, res) => {
-   console.log("upload route works!");
-   return res.render("templates", {
-    page: "../pages/uploadImage.ejs",
-    title: "Upload Image",
-});
+    console.log("upload route works!");
+    return res.render("templates", {
+        page: "../pages/uploadImage.ejs",
+        title: "Upload Image",
+        uploadDisplay: false
+    });
 })
 
 app.get("/login", (req, res) => {
@@ -184,6 +185,7 @@ app.get("/users", (req, res) => {
     return res.render("templates/index.ejs", {
         page: "../pages/users.ejs",
         title: "Users",
+        uploadDisplay: true
     })
 });
 

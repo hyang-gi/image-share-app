@@ -35,8 +35,9 @@
           <%}%>
   </div>
   <% if (user) { %>
-    <a href="/upload"><button class="upload-button">Upload Image</button></a>
-    <% } %>
+    <% if (uploadDisplay !=false) { %>
+      <a href="/upload"><button class="upload-button">Upload Image</button></a>
+      <% }} %>
 </body>
 
 </html>
