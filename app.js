@@ -55,7 +55,7 @@ initializePassport(
     email => getUserByEmail(email),
 );
 
-const users = [];
+// const users = [];
 
 /* Middleware set up */
 
