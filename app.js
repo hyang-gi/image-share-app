@@ -113,7 +113,7 @@ app.post("/register", async (req, res) => {
     } catch {
         res.redirect('/register')
     }
-    console.log(users);
+    console.log(users, "account created");
 });
 
 // other routes
