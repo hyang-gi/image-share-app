@@ -111,7 +111,7 @@ app.get("/", (req, res) => {
 
 /* Authentication GET requests */
 
-app.get("/upload", (req, res) => {
+app.get("/upload", checkAuthenticated, (req, res) => {
     console.log("upload route works!");
     return res.render("templates", {
         page: "../pages/uploadImage.ejs",
@@ -197,7 +197,7 @@ app.post('/logout', function (req, res, next) {
 
 /* Other Routes */
 
-app.get("/profile", (req, res) => {
+app.get("/profile", checkAuthenticated, (req, res) => {
     const getUser = req.user.user_email;
     console.log("getUser for /profile", getUser);
     connection.query('SELECT * FROM users WHERE user_email = ?', [getUser], (error, results) => {
@@ -217,7 +217,7 @@ app.get("/profile", (req, res) => {
     })
 });
 
-app.get("/users", (req, res) => {
+app.get("/users", checkAuthenticated, (req, res) => {
     //return res.render("pages/users.ejs");
     connection.query('SELECT * FROM users', (error, results) => {
         if (error) {
@@ -244,6 +244,13 @@ app.get("/hi/:personName/:personLastName", (req, res) => {
 });
  
 */
+
+function checkAuthenticated(req, res, next) {
+    if (req.isAuthenticated()) {
+        return next();
+    }
+    res.redirect('/login');
+}
 
 /* Setup Server */
 
