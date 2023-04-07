@@ -16,7 +16,7 @@ const express = require("express");
 const path = require("path");
 const bcrypt = require("bcrypt");
 const passport = require("passport");
-const flash = require("flash");
+const flash = require("express-flash");
 const session = require("express-session");
 const bodyParser = require("body-parser");
 

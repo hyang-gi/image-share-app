@@ -195,6 +195,10 @@ a {
   color: var(--light);
 }
 
+.error-message {
+  padding-bottom: 1rem;
+}
+
 /* Users Page Styles */
 
 .user-card {
