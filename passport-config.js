@@ -9,7 +9,7 @@ function initialize(passport, getUserByEmail) {
     console.log("passport initialize works");
     const authenticateUser = async (email, password, done) => {
         const user = await getUserByEmail(email).then(async (user) => {
-            console.log("p-c user", user);
+            //console.log("p-c user", user);
             if (user == null) {
                 console.log("No user with that email");
                 return done(null, false, { message: "No user with that email" });

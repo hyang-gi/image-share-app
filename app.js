@@ -182,21 +182,28 @@ app.post('/logout', function (req, res, next) {
 
 app.get("/users", (req, res) => {
     //return res.render("pages/users.ejs");
-    return res.render("templates/index.ejs", {
-        page: "../pages/users.ejs",
-        title: "Users",
-        uploadDisplay: true
+    connection.query('SELECT * FROM users', (error, results) => {
+        if (error) {
+            throw error;
+        }
+        console.log("users go here", results);
+        return res.render("templates/index.ejs", {
+            page: "../pages/users.ejs",
+            title: "Users",
+            uploadDisplay: true,
+            users: results
+        });
     })
 });
 
 /* Testing Code, Delete Soon  
-
+ 
 app.get("/hi/:personName/:personLastName", (req, res) => {
     const name = req.params.personName;
     const lastName = req.params.personLastName;
     return res.render("templates", { data: { name, lastName } });
 });
-
+ 
 */
 
 /* Setup Server */

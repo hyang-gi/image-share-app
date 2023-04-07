@@ -1,52 +1,10 @@
 <div id="user-list">
-  <!-- User cards will be dynamically added here -->
+  <div class="title">
+    <span class="title">Users</span>
+  </div>
+  <% users.forEach(user=> { %>
+    <p>
+      <%= user.username %> (<%= user.user_email %>)
+    </p>
+    <% }); %>
 </div>
-
-<script>
-  // Sample user data
-  const users = [
-    {
-      name: 'John Doe',
-      createdDate: 'March 10, 2022',
-      bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vehicula accumsan felis, nec pretium nisl ultricies vel.'
-    },
-    {
-      name: 'Jane Smith',
-      createdDate: 'April 15, 2021',
-      bio: 'Praesent euismod neque quis orci hendrerit, quis faucibus velit tempor. Sed fermentum aliquam nisi a consequat.'
-    },
-    {
-      name: 'Bob Johnson',
-      createdDate: 'December 1, 2020',
-      bio: 'Nam id consequat odio, non ultrices orci. Sed sit amet elit vitae mauris pretium placerat nec ac eros.'
-    }
-  ];
-
-  // Function to create a user card
-  function createUserCard(user) {
-    const card = document.createElement('div');
-    card.classList.add('user-card');
-
-    const name = document.createElement('h2');
-    name.textContent = user.name;
-    card.appendChild(name);
-
-    const createdDate = document.createElement('p');
-    createdDate.classList.add('created-date');
-    createdDate.textContent = `Account created on ${user.createdDate}`;
-    card.appendChild(createdDate);
-
-    const bio = document.createElement('p');
-    bio.textContent = user.bio;
-    card.appendChild(bio);
-
-    return card;
-  }
-
-  // Add user cards to the DOM
-  const userList = document.getElementById('user-list');
-  users.forEach(user => {
-    const card = createUserCard(user);
-    userList.appendChild(card);
-  });
-</script>
