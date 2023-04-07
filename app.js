@@ -88,20 +88,21 @@ app.use((req, res, next) => {
 
 /* Define display for undefined routes */
 
-app.use((req, res, next) => {
-    res.status(404).render('templates', {
-      title: 'Error',
-      uploadDisplay: false,
-      isProfilePage: false,
-      isUsersPage: false,
-    });
-  });
+// app.use((req, res, next) => {
+//     res.status(404).render('templates', {
+//       title: 'Error',
+//       uploadDisplay: false,
+//       isProfilePage: false,
+//       isUsersPage: false,
+//     });
+//   });
 
 /* Landing page GET request */
 
 app.get("/", (req, res) => {
     return res.render("templates", {
         title: "Posts",
+        page: "../pages/posts.ejs",
         uploadDisplay: true,
         isProfilePage: false,
         isUsersPage: false,
