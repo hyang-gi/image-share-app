@@ -32,7 +32,11 @@
     <% if(locals.page){ %>
       <%- include(page) %>
         <%} else { %>
-          <p>No page selected</p>
+          <div class="unknown-container">
+            <img class="sticker" src="/images/error_ramen.png" alt="unknown page sticker">
+            <p>That's strange! You seemed to have entered an unknown territory.</p>
+            <p>GO BACK!!!</p>
+          </div>
           <%}%>
   </div>
   <% if (user) { %>

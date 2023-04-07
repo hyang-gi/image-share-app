@@ -82,7 +82,7 @@ li a {
 
 .login-container,
 .register-container,
-.logout-container, .upload-img-container {
+.logout-container, .upload-img-container, .unknown-container {
   color: var(--light);
   text-align: center;
   background-color: var(--primary);
@@ -95,6 +95,10 @@ li a {
   width: 32rem;
 }
 
+.unknown-container {
+  background-color: var(--light);
+  color: var(--dark);
+}
 textarea {
   font-family: Lato, Arial, Verdana, Tahoma, sans-serif;
 }
