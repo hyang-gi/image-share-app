@@ -90,7 +90,9 @@ app.use((req, res, next) => {
 /* Authentication GET requests */
 
 app.get("/", (req, res) => {
-    return res.render("templates", { uploadDisplay: true });
+    return res.render("templates", { 
+        title: "Posts", 
+        uploadDisplay: true });
 });
 
 app.get("/upload", (req, res) => {
