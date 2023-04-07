@@ -89,9 +89,12 @@ app.use((req, res, next) => {
 /* Landing page GET request */
 
 app.get("/", (req, res) => {
-    return res.render("templates", { 
-        title: "Posts", 
-        uploadDisplay: true });
+    return res.render("templates", {
+        title: "Posts",
+        uploadDisplay: true,
+        isProfilePage: false,
+        isUsersPage: false,
+    });
 });
 
 /* Authentication GET requests */
@@ -101,7 +104,9 @@ app.get("/upload", (req, res) => {
     return res.render("templates", {
         page: "../pages/uploadImage.ejs",
         title: "Upload Image",
-        uploadDisplay: false
+        uploadDisplay: false,
+        isProfilePage: false,
+        isUsersPage: false,
     });
 })
 
@@ -184,20 +189,22 @@ app.get("/profile", (req, res) => {
     const getUser = req.user.user_email;
     console.log("getUser for /profile", getUser);
     connection.query('SELECT * FROM users WHERE user_email = ?', [getUser], (error, results) => {
-      if (error) {
-        console.log("Unable to get user", error);
-        throw error;
-      }
-      console.log("user details", results[0]);
-      return res.render("templates/index.ejs", {
-        page: "../pages/profile.ejs",
-        title: "Profile",
-        uploadDisplay: true,
-        user: results[0]
-      });
+        if (error) {
+            console.log("Unable to get user", error);
+            throw error;
+        }
+        console.log("user details", results[0]);
+        return res.render("templates/index.ejs", {
+            page: "../pages/profile.ejs",
+            title: "Profile",
+            uploadDisplay: true,
+            isProfilePage: true,
+            isUsersPage: false,
+            user: results[0]
+        });
     })
-  });
-  
+});
+
 app.get("/users", (req, res) => {
     //return res.render("pages/users.ejs");
     connection.query('SELECT * FROM users', (error, results) => {
@@ -208,6 +215,8 @@ app.get("/users", (req, res) => {
         return res.render("templates/index.ejs", {
             page: "../pages/users.ejs",
             title: "Users",
+            isProfilePage: false,
+            isUsersPage: true,
             uploadDisplay: true,
             users: results
         });

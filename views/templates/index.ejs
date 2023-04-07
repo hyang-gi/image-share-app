@@ -28,7 +28,7 @@
       </ul>
     </nav>
   </header>
-  <div class="wrapper">
+  <div class="wrapper <%= isProfilePage ? 'profile-page-wrapper' : '' %> <%= isUsersPage ? 'users-page-wrapper' : '' %>"">
     <% if(locals.page){ %>
       <%- include(page) %>
         <%} else { %>

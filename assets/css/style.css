@@ -73,8 +73,14 @@ li a:hover {
 .wrapper {
   display: flex;
   justify-content: center;
-  align-items: start;
+  align-items: center;
   min-height: 100vh;
+  margin-top: 1rem;
+}
+
+.profile-page-wrapper,
+.settings-page-wrapper {
+  align-items: start;
 }
 
 li a {
