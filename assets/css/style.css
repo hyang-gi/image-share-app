@@ -1,3 +1,5 @@
+/* Global Styles */
+
 :root {
   --primary: #7E52A0;
   --secondary: #1B998B;
@@ -17,6 +19,8 @@ body {
   height: 4.5rem;
   width: 100%;
 }
+
+/* Navbar styles */
 
 .navbar {
   position: absolute;
@@ -63,7 +67,7 @@ li a:hover {
   margin-bottom: 1rem;
 }
 
-/* Sign-up, Sign-in Styles */
+/* Form, Wrapper Styles */
 
 .wrapper {
   display: flex;
