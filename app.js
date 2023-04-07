@@ -86,17 +86,6 @@ app.use((req, res, next) => {
     next();
 });
 
-/* Define display for undefined routes */
-
-// app.use((req, res, next) => {
-//     res.status(404).render('templates', {
-//       title: 'Error',
-//       uploadDisplay: false,
-//       isProfilePage: false,
-//       isUsersPage: false,
-//     });
-//   });
-
 /* Landing page GET request */
 
 app.get("/", (req, res) => {
@@ -251,6 +240,17 @@ function checkAuthenticated(req, res, next) {
     }
     res.redirect('/login');
 }
+
+/* Define display for undefined routes */
+
+app.use((req, res, next) => {
+    res.status(404).render('templates', {
+      title: 'Error',
+      uploadDisplay: false,
+      isProfilePage: false,
+      isUsersPage: false,
+    });
+  });
 
 /* Setup Server */
 
