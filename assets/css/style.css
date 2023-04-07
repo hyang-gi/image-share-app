@@ -221,3 +221,8 @@ a {
 .card-spacer {
   padding: 1rem;
 }
+
+#display-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
