@@ -39,7 +39,7 @@ function onConnectionReady(err) {
     if (err != null) {
         console.error("There's an error in db connection", err);
     } else {
-        console.log("Connection Ready Block", `Error? ${err}`);
+        console.log("Database Status: Connected.", `Error? ${err}`);
     }
 }
 
@@ -86,14 +86,15 @@ app.use((req, res, next) => {
     next();
 });
 
-
-/* Authentication GET requests */
+/* Landing page GET request */
 
 app.get("/", (req, res) => {
     return res.render("templates", { 
         title: "Posts", 
         uploadDisplay: true });
 });
+
+/* Authentication GET requests */
 
 app.get("/upload", (req, res) => {
     console.log("upload route works!");
@@ -179,6 +180,24 @@ app.post('/logout', function (req, res, next) {
 
 /* Other Routes */
 
+app.get("/profile", (req, res) => {
+    const getUser = req.user.user_email;
+    console.log("getUser for /profile", getUser);
+    connection.query('SELECT * FROM users WHERE user_email = ?', [getUser], (error, results) => {
+      if (error) {
+        console.log("Unable to get user", error);
+        throw error;
+      }
+      console.log("user details", results[0]);
+      return res.render("templates/index.ejs", {
+        page: "../pages/profile.ejs",
+        title: "Profile",
+        uploadDisplay: true,
+        user: results[0]
+      });
+    })
+  });
+  
 app.get("/users", (req, res) => {
     //return res.render("pages/users.ejs");
     connection.query('SELECT * FROM users', (error, results) => {

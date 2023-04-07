@@ -1,0 +1,17 @@
+<div id="user-list">
+    <% if (user) { %>
+        <div class="user-card">
+          <div class="user-image">
+            <img src="<%= user.user_image_path %>" alt="User Image">
+          </div>
+          <div class="input-spacer"></div>
+          <div class="user-details">
+            <span id="display-name"><%= user.user_display_name %></span>
+            <span id="username"><%= user.username %></span>
+            <span id="bio"><%= user.user_bio %></span>
+          </div>
+        </div>
+        <div class="card-spacer"></div>
+        <span>All posts by <%- user.user_display_name %> go here.</span>
+      <% } %>
+  </div>
