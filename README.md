@@ -15,6 +15,17 @@ The application must comprise the following features:
 * It will allow all users (logged-in and not logged-in) to browse all images that have been uploaded
 * It will allow all users to view a particular image and to see the date that the image was uploaded, the name of the user who uploaded it, how many likes it has received and any comments that have been posted about that image
 
+### Functionality Expectations
+
+* Make sure you have the correct tables, entity tables and management tables, how many do you need?
+* When a visitor signs up for the first time, allow them to register to your application. Make them provide their username and password or let them sign up using their google, facebook, linkedin or other oAuth credentials if you can.
+* Once they are registered, let them login to your application. Once logged in, store their name and id into a the session.
+* Accept images, define which file extentions are acceptable .jpg, .png, any others?
+* Store uploaded images in a dedicated uploads folder in your static content directory.
+* When you are taking comments and likes for uploaded images, make sure that you sanitise the user-generated content and validate the values on the server.
+* When you handle database interactions, please do so by using models and ideally by using a query builder.
+* From a UI/UX perspective, take my comments from the very first lesson in mind:  Visibility, Feedback, Affordance, Mapping, Constraints & Consistency
+
 
 ### Development Process
 
