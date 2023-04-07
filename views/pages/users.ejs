@@ -1,17 +1,16 @@
 <div id="user-list">
-  <div class="title">
-    <span class="title">Users</span>
-  </div>
   <% users.forEach(user=> { %>
-    <div class="user">
-      <div class="user-image">
-        <img src="<%= user.user_image_path %>" alt="User Image">
+      <div class="user-card">
+        <div class="user-image">
+          <img src="<%= user.user_image_path %>" alt="User Image">
+        </div>
+        <div class="input-spacer"></div>
+        <div class="user-details">
+          <span id="display-name"><%= user.user_display_name %></span>
+          <span id="username"><%= user.username %></span>
+          <span id="bio"><%= user.user_bio %></span>
+        </div>
       </div>
-      <div class="user-details">
-        <p><%= user.user_display_name %></p>
-        <p><%= user.username %></p>
-        <p><%= user.user_bio %></p>
-      </div>
-    </div>
+      <div class="card-spacer"></div>
     <% }); %>
 </div>
