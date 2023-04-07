@@ -19,10 +19,10 @@ function initialize(passport, getUserByEmail) {
                 console.log(password, user.user_password);
                 if (await bcrypt.compare(password, user.user_password)) {
                     console.log("correct password");
-                    return done(null, user) //return the user you want to authenticate 
+                    return done(null, user) //returns the user you want to authenticate 
                 } else {
-                    console.log("wrong password entered");
-                    return done(null, false, { message: "Password incorrect" });
+                    console.log("Wrong password entered");
+                    return done(null, false, { message: "Password mismatch, try again!" });
                 }
             } catch (e) {
                 return done(e)

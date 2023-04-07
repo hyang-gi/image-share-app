@@ -5,7 +5,7 @@ if (process.env.NODE_ENV != "production") {
     dotenv.config();
 }
 
-/* Initialising variables */
+/* Initialising other variables */
 
 const avatarImages = ["a1.png", "a2.png", "a3.png", "a4.png", "a5.png", "a6.png", "a7.png"];
 
@@ -37,9 +37,9 @@ connection.connect(onConnectionReady);
 
 function onConnectionReady(err) {
     if (err != null) {
-        console.error(err);
+        console.error("There's an error in db connection", err);
     } else {
-        console.log("connection ready!", `Error? ${err}`);
+        console.log("Connection Ready Block", `Error? ${err}`);
     }
 }
 
@@ -47,15 +47,13 @@ function onConnectionReady(err) {
 async function getUserByEmail(email) {
     console.log(email);
     const [rows, fields] = await connection.promise().query('SELECT * FROM users WHERE user_email = ?', [email]);
-    console.log(rows[0]);
+    console.log("Fetched user in getUserByEmail method", rows[0]);
     return rows[0];
 };
 
 const initializePassport = require('./passport-config');
 initializePassport(
     passport,
-    // email => users.find(user => user.email === email),
-    // id => users.find(user => user.id === id)
     email => getUserByEmail(email),
 );
 
@@ -87,7 +85,6 @@ app.use((req, res, next) => {
     res.locals.user = req.user;
     next();
 });
-
 
 
 /* Authentication GET requests */
@@ -140,23 +137,22 @@ app.post("/login", passport.authenticate('local', {
 }));
 
 app.post("/register", async (req, res) => {
-    //console.log(req);
+    //console.log("Request details from /register", req);
     try {
         const { user_display_name, username, user_email, user_bio } = req.body;
         const hashedPassword = await bcrypt.hash(req.body.user_password, 10);
         const user_password = hashedPassword;
-        
+
         const randomIndex = Math.floor(Math.random() * avatarImages.length);
         const user_image = avatarImages[randomIndex];
         const user_image_path = `/images/avatar/${user_image}`;
 
         const user = { user_display_name, username, user_email, user_password, user_bio, user_image_path };
         console.log("User details from req", user);
-        
+
         connection.query("INSERT INTO users SET ?", user, (err, results) => {
             if (err) {
-                console.error(err);
-                // res.status(500).send("Error creating user");
+                console.error("Unable to add user details in database", err);
                 return res.redirect("/register");
             } else {
                 console.log("User created successfully!", results);
