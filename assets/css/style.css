@@ -102,9 +102,17 @@ li a {
   width: 32rem;
 }
 
+.upload-img-container {
+  width: 40rem;
+}
+
 .unknown-container {
   background-color: var(--light);
   color: var(--dark);
+}
+
+.upload-img-container .sticker {
+  width: 6rem;
 }
 textarea {
   font-family: Lato, Arial, Verdana, Tahoma, sans-serif;
@@ -235,4 +243,10 @@ a {
 #display-name {
   font-size: 1.5rem;
   font-weight: 700;
+}
+
+/* Upload Page Styling */
+
+.file-input {
+  padding: 1rem 0 1rem 0;
 }

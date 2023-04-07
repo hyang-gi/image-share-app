@@ -1,16 +1,16 @@
 <div class="upload-img-container">
     <img class="sticker" src="/images/upload.png" alt="upload sticker">
-    <div class="title">
-        <span>Upload An Image</span>
-    </div>
-    <p>
-      <span class="content">Accepted file types are .jpg, .png, .gif, not exceeding 2MB in file size</span>
-      <% if (locals.messages && messages.error) { %>
-        <span class="error"><%= messages.error %></span>
-      <% } %>
-      </p>
     <form action="/upload" method="post" enctype="multipart/form-data">
-      <input type="file" name="pic" id="pic" />
+      <input class="input-box" type="text" id="image_title" name="image_title" placeholder="Your photo title goes here" required>
+      <textarea class="input-box" type="text" id="image_caption" name="image_caption" placeholder="Describe your photo..."></textarea>
+      <input class="input-box" type="text" id="image_alt_text" name="image_alt_text" placeholder="Make your photo accessible by adding an alt-text">
+      <p>
+        <span class="content">Accepted file types are .jpg, .png, .gif, not exceeding 2MB in file size</span>
+        <% if (locals.messages && messages.error) { %>
+          <span class="error-message"><%= messages.error %></span>
+        <% } %>
+        </p>     
+      <input class="file-input" type="file" name="pic" id="pic" />
       <button class="submit" type="submit">Upload</button>
     </form>
   </div>
