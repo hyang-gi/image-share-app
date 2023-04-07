@@ -3,7 +3,7 @@
   --secondary: #1B998B;
   --tertiary: #FF579F;
   --light: #F2F2F2;
-  --bg: #EDE6E3;
+  --bg: #F8F0FB;
   --dark: #121212;
 }
 
@@ -87,6 +87,22 @@ li a {
   width: 20rem;
 }
 
+.register-container {
+  width: 32rem;
+}
+
+textarea {
+  font-family: Lato, Arial, Verdana, Tahoma, sans-serif;
+}
+
+.input-spacer {
+  padding: 0.5rem;
+}
+
+.input-row {
+  display: flex;
+  justify-content: space-between;
+}
 .input-box {
   box-sizing: border-box;
   width: 100%;

@@ -4,7 +4,7 @@
   </div>
   <% users.forEach(user=> { %>
     <p>
-      <%= user.username %> (<%= user.user_email %>)
+      <%= user.user_display_name %> | <%= user.username %> | <%= user.user_bio %> 
     </p>
     <% }); %>
 </div>

@@ -3,10 +3,17 @@
         <span class="title">Register & Begin</span>
     </div>
     <form method="POST" action="/register">
-        <input class="input-box" type="text" id="user_display_name" name="user_display_name" placeholder="Display Name" required>
-        <input class="input-box" type="text" id="username" name="username" placeholder="Username" required>
-        <input class="input-box" type="email" id="user_email" name="user_email" placeholder="Email" required>
-        <input class="input-box" type="password" id="password" name="user_password" placeholder="Password" required>
+        <div class="input-row">
+            <input class="input-box" type="text" id="user_display_name" name="user_display_name" placeholder="Display Name" required>
+            <div class="input-spacer"></div>
+            <input class="input-box" type="text" id="username" name="username" placeholder="Username" required>
+        </div>
+        <div class="input-row">
+            <input class="input-box" type="email" id="user_email" name="user_email" placeholder="Email" required>
+            <div class="input-spacer"></div>
+            <input class="input-box" type="password" id="password" name="user_password" placeholder="Password" required>
+        </div>
+        <textarea class="input-box" type="text" id="user_bio" name="user_bio" placeholder="Write a fun bio about yourself or anything really..."></textarea>
         <button class="submit" type="submit">Create Account</button>
     </form>
     <hr>
