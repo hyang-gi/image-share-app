@@ -203,7 +203,7 @@ app.get("/profile", checkAuthenticated, (req, res) => {
             isUsersPage: false,
             user: results[0]
         });
-    })
+    });
 });
 
 app.get("/users", checkAuthenticated, (req, res) => {
@@ -223,16 +223,28 @@ app.get("/users", checkAuthenticated, (req, res) => {
         });
     })
 });
-
-/* Testing Code, Delete Soon  
  
-app.get("/hi/:personName/:personLastName", (req, res) => {
-    const name = req.params.personName;
-    const lastName = req.params.personLastName;
-    return res.render("templates", { data: { name, lastName } });
+ 
+app.get("/users/:username/posts", (req, res) => {
+    const username = req.params.username;
+    console.log("username for /users/username", username);
+    connection.query('SELECT * FROM users WHERE username = ?', [username], (error, results) => {
+        if (error) {
+            console.log("Unable to get user", error);
+            throw error;
+        }
+        console.log("user details", results[0]);
+        return res.render("templates/index.ejs", {
+            page: "../pages/profile.ejs",
+            title: "User Posts",
+            uploadDisplay: true,
+            isProfilePage: true,
+            isUsersPage: false,
+            user: results[0]
+        });
+    });
 });
  
-*/
 
 function checkAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {

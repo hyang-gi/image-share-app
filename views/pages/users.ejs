@@ -1,16 +1,18 @@
 <div id="user-list">
   <% users.forEach(user=> { %>
-      <div class="user-card">
-        <div class="user-image">
-          <img src="<%= user.user_image_path %>" alt="User Image">
+      <a href="/users/<%= user.username %>/posts">
+        <div class="user-card">
+          <div class="user-image">
+            <img src="<%= user.user_image_path %>" alt="User Image">
+          </div>
+          <div class="input-spacer"></div>
+          <div class="user-details">
+            <span id="display-name"><%= user.user_display_name %></span>
+            <span id="username">@<%= user.username %></span>
+            <span id="bio"><%= user.user_bio %></span>
+          </div>
         </div>
-        <div class="input-spacer"></div>
-        <div class="user-details">
-          <span id="display-name"><%= user.user_display_name %></span>
-          <span id="username">@<%= user.username %></span>
-          <span id="bio"><%= user.user_bio %></span>
-        </div>
-      </div>
+      </a>
       <div class="card-spacer"></div>
     <% }); %>
 </div>
