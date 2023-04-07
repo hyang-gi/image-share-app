@@ -3,8 +3,15 @@
     <span class="title">Users</span>
   </div>
   <% users.forEach(user=> { %>
-    <p>
-      <%= user.user_display_name %> | <%= user.username %> | <%= user.user_bio %> 
-    </p>
+    <div class="user">
+      <div class="user-image">
+        <img src="<%= user.user_image_path %>" alt="User Image">
+      </div>
+      <div class="user-details">
+        <p><%= user.user_display_name %></p>
+        <p><%= user.username %></p>
+        <p><%= user.user_bio %></p>
+      </div>
+    </div>
     <% }); %>
 </div>

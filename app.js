@@ -5,6 +5,10 @@ if (process.env.NODE_ENV != "production") {
     dotenv.config();
 }
 
+/* Initialising variables */
+
+const avatarImages = ["a1.png", "a2.png", "a3.png", "a4.png", "a5.png", "a6.png", "a7.png"];
+
 /* Initialising modules */
 
 const PORT = 5000;
@@ -55,7 +59,6 @@ initializePassport(
     email => getUserByEmail(email),
 );
 
-// const users = [];
 
 /* Middleware set up */
 
@@ -139,34 +142,32 @@ app.post("/login", passport.authenticate('local', {
 app.post("/register", async (req, res) => {
     //console.log(req);
     try {
-        const { user_display_name, username, user_email } = req.body;
+        const { user_display_name, username, user_email, user_bio } = req.body;
         const hashedPassword = await bcrypt.hash(req.body.user_password, 10);
         const user_password = hashedPassword;
-        const user = { user_display_name, username, user_email, user_password };
-        console.log(user);
-        // users.push({
-        //     id: Date.now().toString(), //automatically gen in database
-        //     name: req.body.user_display_name,
-        //     username: req.body.username,
-        //     email: req.body.user_email,
-        //     password: hashedPassword
-        // });
+        
+        const randomIndex = Math.floor(Math.random() * avatarImages.length);
+        const user_image = avatarImages[randomIndex];
+        const user_image_path = `/images/avatar/${user_image}`;
+
+        const user = { user_display_name, username, user_email, user_password, user_bio, user_image_path };
+        console.log("User details from req", user);
+        
         connection.query("INSERT INTO users SET ?", user, (err, results) => {
             if (err) {
                 console.error(err);
                 // res.status(500).send("Error creating user");
                 return res.redirect("/register");
             } else {
-                console.log("User created successfully!");
-                // res.status(200).send("User created successfully");
+                console.log("User created successfully!", results);
                 return res.redirect('/login');
             }
         });
 
     } catch {
-        res.redirect('/register')
+        console.log("There's an error in account creation process, redirecting to /register");
+        res.redirect('/register');
     }
-    console.log("account created");
 });
 
 /* Delete Logged In Session */
