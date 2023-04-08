@@ -8,6 +8,7 @@ if (process.env.NODE_ENV != "production") {
 /* Initialising other variables */
 
 const avatarImages = ["a1.png", "a2.png", "a3.png", "a4.png", "a5.png", "a6.png", "a7.png"];
+const acceptedTypes = ["image/gif", "image/jpeg", "image/png"];
 
 /* Initialising modules */
 
@@ -19,6 +20,9 @@ const passport = require("passport");
 const flash = require("express-flash");
 const session = require("express-session");
 const bodyParser = require("body-parser");
+const fileUpload = require("express-fileupload");
+const sharp = require("sharp");
+const fs = require("fs");
 
 /* Configuring database set up */
 
@@ -79,6 +83,16 @@ app.use(passport.session());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+app.use(
+    fileUpload({
+        limits: {
+            fileSize: 2000000, // Around 2MB
+        },
+        abortOnLimit: true,
+        limitHandler: fileTooBig,
+    })
+);
+
 /* Check for user object */
 
 app.use((req, res, next) => {
@@ -91,7 +105,7 @@ app.use((req, res, next) => {
 app.get("/", (req, res) => {
     return res.render("templates", {
         title: "Posts",
-        page: "../pages/posts.ejs",
+        page: "../pages/home.ejs",
         uploadDisplay: true,
         isProfilePage: false,
         isUsersPage: false,
@@ -223,8 +237,8 @@ app.get("/users", checkAuthenticated, (req, res) => {
         });
     })
 });
- 
- 
+
+
 app.get("/users/:username/posts", (req, res) => {
     const username = req.params.username;
     console.log("username for /users/username", username);
@@ -244,7 +258,94 @@ app.get("/users/:username/posts", (req, res) => {
         });
     });
 });
- 
+
+/* Upload Post Request */
+
+app.post("/upload", checkAuthenticated, async (req, res) => {
+    const username = req.user.username;
+    const image = req.files.pic;
+    const img_details = req.body;
+    console.log({ img_details });
+    image.name = Date.now() + image.name;
+
+    if (acceptedTypes.indexOf(image.mimetype) >= 0) {
+        const imageDestinationPath = __dirname + "/assets/uploads/" + image.name;
+        const resizedImagePath =
+            __dirname + "/assets/uploads/resized/" + image.name;
+
+        console.log(image);
+
+        await image.mv(imageDestinationPath).then(async () => {
+            try {
+                await sharp(imageDestinationPath)
+                    .resize(600)
+                    .toFile(resizedImagePath)
+                    .then(() => {
+                        fs.unlink(imageDestinationPath, function (err) {
+                            if (err) throw err;
+                            console.log(imageDestinationPath + " deleted");
+                        });
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+
+            const images = {
+                image_name: img_details.title,
+                image_caption: img_details.caption,
+                image_alt_text: img_details.alt_text,
+                image_path: resizedImagePath,
+                image_uploaded_by: username
+            };
+            console.log({ images });
+            // connection.query("INSERT INTO images SET ?", images, (err, results) => {
+            //     if (err) {
+            //         console.error("Unable to add user details in database", err);
+            //         return res.redirect("/upload");
+            //     } else {
+            //         console.log("Post uploaded successfully!", results);
+            //         return res.render("templates", {
+            //             page: "../pages/posts.ejs",
+            //             title: "Posts",
+            //             image: "/uploads/resized/" + image.name,
+            //             image_name: image.name,
+            //             img_title: img_details.image_title,
+            //             caption: img_details.image_caption,
+            //             alt: img_details.image_alt_text,
+            //             isProfilePage: false,
+            //             isUsersPage: false,
+            //             uploadDisplay: true,
+
+            //         });
+            //     }
+            // });
+            return res.render("templates", {
+                page: "../pages/posts.ejs",
+                title: "Posts",
+                image: "/uploads/resized/" + image.name,
+                image_name: image.name,
+                img_title: img_details.image_title,
+                caption: img_details.image_caption,
+                alt: img_details.image_alt_text,
+                isProfilePage: false,
+                isUsersPage: false,
+                uploadDisplay: true,
+
+            });
+        });
+    } else {
+        console.log("failed to upload else condition");
+        return res.render("templates", {
+            messages: { error: "You call that an image?" },
+            page: "../pages/uploadImage.ejs",
+            title: "Upload Image",
+            uploadDisplay: false,
+            isProfilePage: false,
+            isUsersPage: false,
+        });
+    }
+});
+
 
 function checkAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {
@@ -253,16 +354,29 @@ function checkAuthenticated(req, res, next) {
     res.redirect('/login');
 }
 
+function fileTooBig(req, res, next) {
+    console.log("File too big block!");
+    return res.render("templates", {
+        user: req.user,
+        messages: { error: "File size exceeds 2MB!" },
+        page: "../pages/uploadImage.ejs",
+        title: "Upload Image",
+        isProfilePage: false,
+        isUsersPage: false,
+        uploadDisplay: false,
+    });
+}
+
 /* Define display for undefined routes */
 
 app.use((req, res, next) => {
     res.status(404).render('templates', {
-      title: 'Error',
-      uploadDisplay: false,
-      isProfilePage: false,
-      isUsersPage: false,
+        title: 'Error',
+        uploadDisplay: false,
+        isProfilePage: false,
+        isUsersPage: false,
     });
-  });
+});
 
 /* Setup Server */
 
