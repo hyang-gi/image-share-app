@@ -220,7 +220,7 @@ a {
   background-color: var(--faded);
   border-radius: 4px;
   padding: 2rem;
-  width: 32rem;
+  width: 33.5rem;
   overflow-y: auto;
 }
 
@@ -279,4 +279,16 @@ a {
 
 .posts-username:hover {
   color: var(--primary);
+}
+
+.no-posts-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.no-posts-container .unknown-container {
+  text-align: center;
+  background-color: var(--bg);
 }

@@ -1,17 +1,47 @@
 <div id="user-list">
-    <% if (user) { %>
-        <div class="user-card">
-          <div class="user-image">
-            <img src="<%= user.user_image_path %>" alt="User Image">
+  <% if (user) { %>
+    <div class="user-card">
+      <div class="user-image">
+        <img src="<%= user.user_image_path %>" alt="User Image">
+      </div>
+      <div class="input-spacer"></div>
+      <div class="user-details">
+        <span id="display-name">
+          <%= user.user_display_name %>
+        </span>
+        <span id="username">@<%= user.username %></span>
+        <span id="bio">
+          <%= user.user_bio %>
+        </span>
+      </div>
+    </div>
+    <div class="card-spacer"></div>
+    <% } %>
+    <div class="posts-container">
+      <% if (images.length !=0) { %>
+          <% images.forEach(image=> { %>
+            <div class="posts-card">
+              <div class="posts-img">
+                <img src="<%= image.image_path %> " alt="<%= image.image_alt_text %>" />
+              </div>
+              <br>
+              <div class="posts-content">
+                <a class="posts-username" href="/users/<%= image.image_uploaded_by %>/posts"><span>@<%=
+                      image.image_uploaded_by %></span></a>
+                <br><span>
+                  <%= image.image_caption %>
+                </span>
+              </div>
+            </div>
+            <div class="card-spacer"></div>
+      </div>
+      <% }); %>
+        <% } else { %>
+          <div class="no-posts-container">
+            <div class="unknown-container">
+              <img class="sticker" src="/images/error_ramen.png" alt="unknown page sticker">
+              <p>This user has been to lazy to post any image yet.</p>
+            </div>
+            <% } %>
           </div>
-          <div class="input-spacer"></div>
-          <div class="user-details">
-            <span id="display-name"><%= user.user_display_name %></span>
-            <span id="username">@<%= user.username %></span>
-            <span id="bio"><%= user.user_bio %></span>
-          </div>
-        </div>
-        <div class="card-spacer"></div>
-        <span>All posts by <%- user.user_display_name %> go here.</span>
-      <% } %>
-  </div>
+</div>

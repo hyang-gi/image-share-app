@@ -210,6 +210,7 @@ app.post('/logout', function (req, res, next) {
 
 app.get("/profile", checkAuthenticated, (req, res) => {
     const getUser = req.user.user_email;
+    const getUsername = req.user.username;
     console.log("getUser for /profile", getUser);
     connection.query('SELECT * FROM users WHERE user_email = ?', [getUser], (error, results) => {
         if (error) {
@@ -217,13 +218,21 @@ app.get("/profile", checkAuthenticated, (req, res) => {
             throw error;
         }
         console.log("user details", results[0]);
-        return res.render("templates/index.ejs", {
-            page: "../pages/profile.ejs",
-            title: "Profile",
-            uploadDisplay: true,
-            isProfilePage: true,
-            isUsersPage: false,
-            user: results[0]
+        connection.query('SELECT * FROM images WHERE image_uploaded_by = ?', [getUsername], (error, img_results) => {
+            if (error) {
+                console.log("Unable to get user", error);
+                throw error;
+            }
+            console.log("image results", img_results);
+            return res.render("templates/index.ejs", {
+                page: "../pages/profile.ejs",
+                title: "Profile",
+                uploadDisplay: true,
+                isProfilePage: true,
+                isUsersPage: false,
+                user: results[0],
+                images: img_results
+            });
         });
     });
 });
@@ -256,13 +265,21 @@ app.get("/users/:username/posts", (req, res) => {
             throw error;
         }
         console.log("user details", results[0]);
-        return res.render("templates/index.ejs", {
-            page: "../pages/profile.ejs",
-            title: "User Posts",
-            uploadDisplay: true,
-            isProfilePage: true,
-            isUsersPage: false,
-            user: results[0]
+        connection.query('SELECT * FROM images WHERE image_uploaded_by = ?', [username], (error, img_results) => {
+            if (error) {
+                console.log("Unable to get user", error);
+                throw error;
+            }
+            console.log("image results", img_results);
+            return res.render("templates/index.ejs", {
+                page: "../pages/profile.ejs",
+                title: "User Posts",
+                uploadDisplay: true,
+                isProfilePage: true,
+                isUsersPage: false,
+                user: results[0],
+                images: img_results
+            });
         });
     });
 });
