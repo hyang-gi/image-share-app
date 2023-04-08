@@ -205,6 +205,9 @@ a {
 
 .error-message {
   padding-bottom: 0.5rem;
+  text-decoration: underline;
+  text-decoration-color: var(--tertiary);
+  text-decoration-thickness: 4px;
 }
 
 /* Users Page Styles */
