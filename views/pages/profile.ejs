@@ -17,9 +17,9 @@
     </div>
     <div class="card-spacer"></div>
     <% } %>
-      <div class="posts-container">
-        <% if (images.length !=0) { %>
-          <% images.forEach(image=> { %>
+      <% if (images.length !=0) { %>
+        <% images.forEach(image=> { %>
+          <div class="posts-container">
             <div class="posts-card">
               <div class="posts-img">
                 <img src="<%= image.image_path %> " alt="<%= image.image_alt_text %>" />
@@ -37,14 +37,14 @@
               </div>
             </div>
             <div class="card-spacer"></div>
-      </div>
-      <% }); %>
-        <% } else { %>
-          <div class="no-posts-container">
-            <div class="unknown-container">
-              <img class="sticker" src="/images/error_ramen.png" alt="unknown page sticker">
-              <p>This user has been to lazy to post any image yet.</p>
-            </div>
-            <% } %>
           </div>
+          <% }); %>
+            <% } else { %>
+              <div class="no-posts-container">
+                <div class="unknown-container">
+                  <img class="sticker" src="/images/error_ramen.png" alt="unknown page sticker">
+                  <p>This user has been to lazy to post any image yet.</p>
+                </div>
+                <% } %>
+              </div>
 </div>
