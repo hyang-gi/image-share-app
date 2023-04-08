@@ -153,7 +153,7 @@ app.get("/logout", (req, res) => {
 
     return res.render("templates/authentication.ejs", {
         page: "../pages/logout.ejs",
-        title: "Login",
+        title: "Logout",
     });
     // return res.render("pages/login.ejs");
 });
@@ -256,7 +256,7 @@ app.get("/users", checkAuthenticated, (req, res) => {
 });
 
 
-app.get("/users/:username/posts", (req, res) => {
+app.get("/users/:username/posts", checkAuthenticated, (req, res) => {
     const username = req.params.username;
     console.log("username for /users/username", username);
     connection.query('SELECT * FROM users WHERE username = ?', [username], (error, results) => {
