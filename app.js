@@ -125,17 +125,6 @@ app.get("/", (req, res) => {
 
 /* Authentication GET requests */
 
-app.get("/upload", checkAuthenticated, (req, res) => {
-    console.log("upload route works!");
-    return res.render("templates", {
-        page: "../pages/uploadImage.ejs",
-        title: "Upload Image",
-        uploadDisplay: false,
-        isProfilePage: false,
-        isUsersPage: false,
-    });
-})
-
 app.get("/login", (req, res) => {
 
     return res.render("templates/authentication.ejs", {
@@ -210,6 +199,17 @@ app.post('/logout', function (req, res, next) {
 });
 
 /* Other Routes */
+
+app.get("/upload", checkAuthenticated, (req, res) => {
+    console.log("upload route works!");
+    return res.render("templates", {
+        page: "../pages/uploadImage.ejs",
+        title: "Upload Image",
+        uploadDisplay: false,
+        isProfilePage: false,
+        isUsersPage: false,
+    });
+});
 
 app.get("/profile", checkAuthenticated, (req, res) => {
     const getUser = req.user.user_email;
@@ -287,6 +287,7 @@ app.get("/users/:username/posts", checkAuthenticated, (req, res) => {
     });
 });
 
+// TO-DO: add checkAuthenticated 
 app.get("/posts/:post_id", (req, res) => {
     const post_id = req.params.post_id;
     console.log("post id GET REQ", post_id)
@@ -372,6 +373,10 @@ app.post("/upload", checkAuthenticated, async (req, res) => {
         });
     }
 });
+
+/* Add Comment POST Request */
+
+/* Like POST Request */
 
 
 function checkAuthenticated(req, res, next) {
