@@ -162,7 +162,7 @@ app.post("/login", passport.authenticate('local', {
 app.post("/register", async (req, res) => {
     //console.log("Request details from /register", req);
     try {
-        const { user_display_name, username, user_email, user_bio } = req.body;
+        let { user_display_name, username, user_email, user_bio } = req.body;
         const hashedPassword = await bcrypt.hash(req.body.user_password, 10);
         const user_password = hashedPassword;
 
@@ -170,12 +170,24 @@ app.post("/register", async (req, res) => {
         const user_image = avatarImages[randomIndex];
         const user_image_path = `/images/avatar/${user_image}`;
 
+        if (user_bio == '') {
+            user_bio = "Looking for information on this user? Error 404!";
+        }
+
         const user = { user_display_name, username, user_email, user_password, user_bio, user_image_path };
         console.log("User details from req", user);
 
         connection.query("INSERT INTO users SET ?", user, (err, results) => {
             if (err) {
                 console.error("Unable to add user details in database", err);
+                let errorMessage;
+                if (err.sqlMessage.includes('user_email')) {
+                    errorMessage = "This email is already in use.";
+                }
+                if (err.sqlMessage.includes('username')) {
+                    errorMessage = "This username is not available.";
+                }
+                req.flash('error', errorMessage);
                 return res.redirect("/register");
             } else {
                 console.log("User created successfully!", results);
@@ -183,8 +195,8 @@ app.post("/register", async (req, res) => {
             }
         });
 
-    } catch {
-        console.log("There's an error in account creation process, redirecting to /register");
+    } catch (e) {
+        console.log("There's an error in account creation process, redirecting to /register", e);
         res.redirect('/register');
     }
 });

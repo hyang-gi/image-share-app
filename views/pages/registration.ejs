@@ -2,6 +2,9 @@
     <div class="title">
         <span class="title">Register & Begin</span>
     </div>
+    <% if (locals.messages && messages.error) { %>
+        <div class="error-message"><%= messages.error %></div>
+    <% } %>
     <form method="POST" action="/register">
         <div class="input-row">
             <input class="input-box" type="text" id="user_display_name" name="user_display_name" placeholder="Display Name" required>
