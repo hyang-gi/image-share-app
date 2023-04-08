@@ -145,7 +145,7 @@ app.get("/login", (req, res) => {
 app.get("/register", (req, res) => {
     return res.render("templates/authentication.ejs", {
         page: "../pages/registration.ejs",
-        title: "Login",
+        title: "Register",
     });
 });
 
