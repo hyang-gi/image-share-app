@@ -323,7 +323,6 @@ app.post("/upload", checkAuthenticated, async (req, res) => {
             const display_id = Date.now() + uniqueId;
 
             const images = {
-                image_name: img_details.title,
                 image_caption: img_details.caption,
                 image_alt_text: img_details.alt_text,
                 image_path: db_image_path,
