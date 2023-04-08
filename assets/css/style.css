@@ -270,3 +270,8 @@ a {
   width: 100%;
   height: auto;
 }
+
+.posts-username {
+  color: var(--dark);
+  font-weight: 700;
+}
