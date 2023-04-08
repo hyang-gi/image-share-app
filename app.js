@@ -357,12 +357,13 @@ function checkAuthenticated(req, res, next) {
 function fileTooBig(req, res, next) {
     console.log("File too big block!");
     return res.render("templates", {
-        messages: { error: "Filesize too large" },
+        user: req.user,
+        messages: { error: "File size exceeds 2MB!" },
         page: "../pages/uploadImage.ejs",
         title: "Upload Image",
         isProfilePage: false,
-        isUsersPage: true,
-        uploadDisplay: true,
+        isUsersPage: false,
+        uploadDisplay: false,
     });
 }
 
