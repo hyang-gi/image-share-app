@@ -273,5 +273,10 @@ a {
 
 .posts-username {
   color: var(--dark);
+  font-size: 1.2rem;
   font-weight: 700;
+}
+
+.posts-username:hover {
+  color: var(--primary);
 }
