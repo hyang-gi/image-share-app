@@ -103,12 +103,20 @@ app.use((req, res, next) => {
 /* Landing page GET request */
 
 app.get("/", (req, res) => {
-    return res.render("templates", {
-        title: "Posts",
-        page: "../pages/home.ejs",
-        uploadDisplay: true,
-        isProfilePage: false,
-        isUsersPage: false,
+    connection.query('SELECT * FROM images ORDER BY image_uploaded_on DESC', (error, results) => {
+        if (error) {
+            console.log("unable to fetch the images");
+            throw error;
+        }
+        console.log("fetched images go here", results);
+        return res.render("templates/index.ejs", {
+            page: "../pages/posts.ejs",
+            title: "Posts",
+            isProfilePage: false,
+            isUsersPage: false,
+            uploadDisplay: true,
+            images: results
+        });
     });
 });
 
@@ -235,7 +243,7 @@ app.get("/users", checkAuthenticated, (req, res) => {
             uploadDisplay: true,
             users: results
         });
-    })
+    });
 });
 
 
@@ -290,47 +298,24 @@ app.post("/upload", checkAuthenticated, async (req, res) => {
                 console.log(error);
             }
 
+            const db_image_path = `/uploads/resized/${image.name}`;
+
             const images = {
                 image_name: img_details.title,
                 image_caption: img_details.caption,
                 image_alt_text: img_details.alt_text,
-                image_path: resizedImagePath,
+                image_path: db_image_path,
                 image_uploaded_by: username
             };
             console.log({ images });
-            // connection.query("INSERT INTO images SET ?", images, (err, results) => {
-            //     if (err) {
-            //         console.error("Unable to add user details in database", err);
-            //         return res.redirect("/upload");
-            //     } else {
-            //         console.log("Post uploaded successfully!", results);
-            //         return res.render("templates", {
-            //             page: "../pages/posts.ejs",
-            //             title: "Posts",
-            //             image: "/uploads/resized/" + image.name,
-            //             image_name: image.name,
-            //             img_title: img_details.image_title,
-            //             caption: img_details.image_caption,
-            //             alt: img_details.image_alt_text,
-            //             isProfilePage: false,
-            //             isUsersPage: false,
-            //             uploadDisplay: true,
-
-            //         });
-            //     }
-            // });
-            return res.render("templates", {
-                page: "../pages/posts.ejs",
-                title: "Posts",
-                image: "/uploads/resized/" + image.name,
-                image_name: image.name,
-                img_title: img_details.image_title,
-                caption: img_details.image_caption,
-                alt: img_details.image_alt_text,
-                isProfilePage: false,
-                isUsersPage: false,
-                uploadDisplay: true,
-
+            connection.query("INSERT INTO images SET ?", images, (err, results) => {
+                if (err) {
+                    console.error("Unable to add user details in database", err);
+                    return res.redirect("/upload");
+                } else {
+                    console.log("Post uploaded successfully!", results);
+                    return res.redirect("/");
+                }
             });
         });
     } else {
