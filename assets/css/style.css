@@ -286,7 +286,7 @@ a {
 
 /* Posts Page Styling */
 
-.post-like-icon {
+.post-like-icon, .post-comment-icon {
   width: 1.5rem;
   padding: 0.5rem;
   padding-left: 0rem;
@@ -299,7 +299,6 @@ a {
 
 
 .post-comm-num {
-  padding-left: 0.5rem;
   font-weight: 700;
 }
 
