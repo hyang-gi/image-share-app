@@ -33,6 +33,7 @@
     "nodemon": "^2.0.21",
     "passport": "^0.6.0",
     "passport-local": "^1.0.0",
-    "sharp": "^0.32.0"
+    "sharp": "^0.32.0",
+    "uuid": "^9.0.0"
   }
 }

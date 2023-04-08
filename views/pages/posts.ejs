@@ -1,21 +1,23 @@
 <div class="posts-container">
     <% images.forEach(image=> { %>
-        <div class="posts-card">
-            <div class="posts-img">
-                <img src="<%= image.image_path %> " alt="<%= image.image_alt_text %>" />
-            </div>
-            <br>
-            <div class="posts-content">
-                <a class="posts-username" href="/users/<%= image.image_uploaded_by %>/posts"><span>@<%=
-                            image.image_uploaded_by %></span></a>
+        <a href="/posts/<%- image.image_display_id %>">
+            <div class="posts-card">
+                <div class="posts-img">
+                    <img src="<%= image.image_path %> " alt="<%= image.image_alt_text %>" />
+                </div>
                 <br>
-                <div class="posts-caption">
-                    <span>
-                        <%= image.image_caption %>
-                    </span>
+                <div class="posts-content">
+                    <a class="posts-username" href="/users/<%= image.image_uploaded_by %>/posts"><span>@<%=
+                                image.image_uploaded_by %></span></a>
+                    <br>
+                    <div class="posts-caption">
+                        <span>
+                            <%= image.image_caption %>
+                        </span>
+                    </div>
                 </div>
             </div>
-        </div>
+        </a>
         <div class="card-spacer"></div>
         <% }); %>
 </div>

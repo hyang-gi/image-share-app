@@ -23,6 +23,7 @@ const bodyParser = require("body-parser");
 const fileUpload = require("express-fileupload");
 const sharp = require("sharp");
 const fs = require("fs");
+const { v4: uuidv4 } = require('uuid');
 
 /* Configuring database set up */
 
@@ -92,6 +93,8 @@ app.use(
         limitHandler: fileTooBig,
     })
 );
+
+const uniqueId = uuidv4();
 
 /* Check for user object */
 
@@ -316,13 +319,16 @@ app.post("/upload", checkAuthenticated, async (req, res) => {
             }
 
             const db_image_path = `/uploads/resized/${image.name}`;
+            const uniqueId = uuidv4();
+            const display_id = uniqueId;
 
             const images = {
                 image_name: img_details.title,
                 image_caption: img_details.caption,
                 image_alt_text: img_details.alt_text,
                 image_path: db_image_path,
-                image_uploaded_by: username
+                image_uploaded_by: username,
+                image_display_id: display_id
             };
             console.log({ images });
             connection.query("INSERT INTO images SET ?", images, (err, results) => {
