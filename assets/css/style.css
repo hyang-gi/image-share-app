@@ -89,7 +89,9 @@ li a {
 
 .login-container,
 .register-container,
-.logout-container, .upload-img-container, .unknown-container {
+.logout-container,
+.upload-img-container,
+.unknown-container {
   color: var(--light);
   text-align: center;
   background-color: var(--primary);
@@ -114,6 +116,7 @@ li a {
 .upload-img-container .sticker {
   width: 6rem;
 }
+
 textarea {
   font-family: Lato, Arial, Verdana, Tahoma, sans-serif;
 }
@@ -126,6 +129,7 @@ textarea {
   display: flex;
   justify-content: space-between;
 }
+
 .input-box {
   box-sizing: border-box;
   width: 100%;
@@ -153,7 +157,8 @@ button {
 }
 
 .submit,
-.tertiary-button, .secondary-button {
+.tertiary-button,
+.secondary-button {
   width: 100%;
 }
 
@@ -161,6 +166,7 @@ button {
   background-color: var(--secondary);
   color: var(--light);
 }
+
 .tertiary-button {
   background-color: var(--tertiary);
   color: var(--light);
@@ -263,7 +269,7 @@ a {
 
 .posts-card {
   width: 100%;
-  margin-bottom: 20px;
+  margin-bottom: 2rem;
 }
 
 .posts-img {
@@ -291,4 +297,10 @@ a {
 .no-posts-container .unknown-container {
   text-align: center;
   background-color: var(--bg);
+}
+
+.posts-caption {
+  width: 37rem;
+  word-wrap: break-word;
+  margin-top: 0.5rem;
 }

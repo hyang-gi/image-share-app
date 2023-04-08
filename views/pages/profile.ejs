@@ -17,8 +17,8 @@
     </div>
     <div class="card-spacer"></div>
     <% } %>
-    <div class="posts-container">
-      <% if (images.length !=0) { %>
+      <div class="posts-container">
+        <% if (images.length !=0) { %>
           <% images.forEach(image=> { %>
             <div class="posts-card">
               <div class="posts-img">
@@ -28,9 +28,12 @@
               <div class="posts-content">
                 <a class="posts-username" href="/users/<%= image.image_uploaded_by %>/posts"><span>@<%=
                       image.image_uploaded_by %></span></a>
-                <br><span>
-                  <%= image.image_caption %>
-                </span>
+                <br>
+                <div class="posts-caption">
+                  <span>
+                    <%= image.image_caption %>
+                  </span>
+                </div>
               </div>
             </div>
             <div class="card-spacer"></div>
