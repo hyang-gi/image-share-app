@@ -320,7 +320,7 @@ app.post("/upload", checkAuthenticated, async (req, res) => {
 
             const db_image_path = `/uploads/resized/${image.name}`;
             const uniqueId = uuidv4();
-            const display_id = uniqueId;
+            const display_id = Date.now() + uniqueId;
 
             const images = {
                 image_name: img_details.title,
