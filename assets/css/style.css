@@ -275,6 +275,28 @@ a {
 
 /* Posts Page Styling */
 
+.post-like-icon {
+  width: 1.5rem;
+  padding: 0.5rem;
+  padding-left: 0rem;
+}
+
+.post-like-num {
+  padding-right: 2rem;
+  font-weight: 700;
+}
+
+
+.post-comm-num {
+  padding-left: 0.5rem;
+  font-weight: 700;
+}
+
+.post-interaction {
+  display: flex;
+  align-items: center;
+}
+
 .posts-container {
   display: flex;
   flex-direction: column;

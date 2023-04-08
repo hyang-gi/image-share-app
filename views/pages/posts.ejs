@@ -1,23 +1,26 @@
 <div class="posts-container">
     <% images.forEach(image=> { %>
-        <a href="/posts/<%- image.image_display_id %>">
-            <div class="posts-card">
+        <div class="posts-card">
+            <a href="/posts/<%- image.image_display_id %>">
                 <div class="posts-img">
                     <img src="<%= image.image_path %> " alt="<%= image.image_alt_text %>" />
                 </div>
+            </a>
+            <div class="post-interaction">
+                <img class="post-like-icon" src="/images/like_before.png" alt="like icon"><span class="post-like-num">100</span>
+                <div class="post-comment"><span>COMMENTS</span><span class="post-comm-num">98</span></div>
+            </div>
+            <div class="posts-content">
+                <a class="posts-username" href="/users/<%= image.image_uploaded_by %>/posts"><span>@<%=
+                            image.image_uploaded_by %></span></a>
                 <br>
-                <div class="posts-content">
-                    <a class="posts-username" href="/users/<%= image.image_uploaded_by %>/posts"><span>@<%=
-                                image.image_uploaded_by %></span></a>
-                    <br>
-                    <div class="posts-caption">
-                        <span>
-                            <%= image.image_caption %>
-                        </span>
-                    </div>
+                <div class="posts-caption">
+                    <span>
+                        <%= image.image_caption %>
+                    </span>
                 </div>
             </div>
-        </a>
+        </div>
         <div class="card-spacer"></div>
         <% }); %>
 </div>
