@@ -1,0 +1,29 @@
+<div class="posts-container">
+    <div class="posts-card">
+        <a href="/posts/<%- image[0].image_display_id %>">
+            <div class="posts-img">
+                <img src="<%= image[0].image_path %> " alt="<%= image[0].image_alt_text %>" />
+            </div>
+        </a>
+        <div class="post-interaction">
+            <img class="post-like-icon" src="/images/like_before.png" alt="like icon"><span
+                class="post-like-num">100</span>
+            <div class="post-comment"><span>COMMENTS</span><span class="post-comm-num">98</span></div>
+        </div>
+        <div class="posts-content">
+            <a class="posts-username" href="/users/<%= image[0].image_uploaded_by %>/posts"><span>@<%=
+                        image[0].image_uploaded_by %></span></a>
+            <br>
+            <div class="posts-caption">
+                <span>
+                    <%= image[0].image_caption %>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="title2"><span>Replies</span></div>
+    <form action="/reply" method="post" enctype="multipart/form-data">
+        <textarea class="input-box" type="text" id="image_reply" name="caption" placeholder="Enter reply..."></textarea>
+        <button class="primary-button" type="submit">Add Reply</button>
+    </form>
+</div>

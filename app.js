@@ -287,6 +287,26 @@ app.get("/users/:username/posts", checkAuthenticated, (req, res) => {
     });
 });
 
+app.get("/posts/:post_id", (req, res) => {
+    const post_id = req.params.post_id;
+    console.log("post id GET REQ", post_id)
+    connection.query('SELECT * FROM images WHERE image_display_id = ?', [post_id], (error, img_results) => {
+        if (error) {
+            console.log("Unable to get user", error);
+            throw error;
+        }
+        console.log("image results", img_results);
+        return res.render("templates/index.ejs", {
+            page: "../pages/viewPost.ejs",
+            title: "View Post",
+            uploadDisplay: true,
+            isProfilePage: true,
+            isUsersPage: false,
+            image: img_results
+        });
+    });
+});
+
 /* Upload Post Request */
 
 app.post("/upload", checkAuthenticated, async (req, res) => {
