@@ -17,11 +17,23 @@ body {
 }
 
 .header {
+  display: flex;
+  flex-direction: row;
   height: 4.5rem;
   width: 100%;
 }
 
 /* Navbar Styles */
+
+.img-logo {
+  margin-left: 2rem;
+}
+
+.logo h2 {
+  color: var(--primary);
+  margin-left: 1rem;
+  margin-top: 1.5rem;
+}
 
 .navbar {
   position: absolute;

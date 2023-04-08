@@ -2,7 +2,8 @@
 <html lang="en">
 
 <head>
-  <title>tasveer | <%= title %></title>
+  <title>tasveer | <%= title %>
+  </title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="/css/style.css" />
@@ -11,6 +12,12 @@
 
 <body>
   <header class="header">
+    <img class="img-logo" src="/images/logo.png" alt="logo">
+    <div class="logo">
+      <a href="/">
+        <h2>tasveer</h2>
+      </a>
+    </div>
     <nav class="navbar">
       <ul>
         <% if (!user) { %>
@@ -32,17 +39,17 @@
     <% if(locals.page){ %>
       <%- include(page) %>
         <%} else { %>
-          <div class="unknown-container">
-            <img class="sticker" src="/images/error.png" alt="unknown page sticker">
-            <p>You seemed to have entered an unknown territory.</p>
-            <p>GO BACK!!!</p>
-          </div>
-          <%}%>
+          <div class=" unknown-container">
+    <img class="sticker" src="/images/error.png" alt="unknown page sticker">
+    <p>You seemed to have entered an unknown territory.</p>
+    <p>GO BACK!!!</p>
   </div>
-  <% if (user) { %>
-    <% if (uploadDisplay !=false) { %>
-      <a href="/upload"><button class="upload-button">Upload Image</button></a>
-      <% }} %>
+  <%}%>
+    </div>
+    <% if (user) { %>
+      <% if (uploadDisplay !=false) { %>
+        <a href="/upload"><button class="upload-button">Upload Image</button></a>
+        <% }} %>
 </body>
 
 </html>
