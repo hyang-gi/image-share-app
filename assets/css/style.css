@@ -253,3 +253,20 @@ a {
 .file-input {
   padding: 0rem 0 1rem 0;
 }
+
+/* Posts Page Styling */
+
+.posts-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.posts-card {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.posts-img {
+  width: 100%;
+  height: auto;
+}
