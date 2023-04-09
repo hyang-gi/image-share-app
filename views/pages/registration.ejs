@@ -6,7 +6,7 @@
         <div class="error-message"><%= messages.error %></div>
         <br>
     <% } %>
-    <form method="POST" action="/register">
+    <form method="POST" action="/register" enctype="multipart/form-data">
         <div class="input-row">
             <input class="input-box" type="text" id="user_display_name" name="user_display_name" placeholder="Display Name" required>
             <div class="input-spacer"></div>
