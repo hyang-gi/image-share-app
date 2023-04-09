@@ -344,8 +344,24 @@ a {
   background-color: var(--bg);
 }
 
-.posts-caption {
+.posts-caption, .comment-caption {
   width: 37rem;
   word-wrap: break-word;
   margin-top: 0.5rem;
+}
+
+/* Comments Styling */
+
+.comment-username {
+  color: var(--dark);
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.comment-username:hover {
+  color: var(--primary);
+}
+
+.comment-spacer {
+  padding: 0.25rem;
 }
