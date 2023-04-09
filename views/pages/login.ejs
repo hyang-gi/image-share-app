@@ -4,6 +4,7 @@
     </div>
     <% if (locals.messages && messages.error) { %>
         <div class="error-message"><%= messages.error %></div>
+        <br>
       <% } %>
     <form method="POST" action="/login">
         <input class="input-box" type="email" id="user_email" name="user_email" placeholder="Email" required>
