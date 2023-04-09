@@ -119,18 +119,28 @@ app.get("/", (req, res) => {
             }
             console.log("comment count results", comment_results);
             const commentCountMap = new Map(comment_results.map(result => [result.interaction_img_id, result.comment_count]));
-            const updated_images = results.map(img => ({
-                ...img,
-                comment_count: commentCountMap.get(img.image_display_id) || 0
-            }));
-            console.log(updated_images);
-            return res.render("templates/index.ejs", {
-                page: "../pages/posts.ejs",
-                title: "Posts",
-                isProfilePage: false,
-                isUsersPage: false,
-                uploadDisplay: true,
-                images: updated_images
+
+            connection.query('SELECT COUNT(*) AS like_count, interaction_img_id FROM interactions WHERE interaction_type = 1 GROUP BY interaction_img_id', (error, like_results) => {
+                if (error) {
+                    console.log("Unable to get likes count", error);
+                    throw error;
+                }
+                console.log("like count results", like_results);
+                const likeCountMap = new Map(like_results.map(result => [result.interaction_img_id, result.like_count]));
+                const updated_images = results.map(img => ({
+                    ...img,
+                    comment_count: commentCountMap.get(img.image_display_id) || 0,
+                    like_count: likeCountMap.get(img.image_display_id) || 0
+                }));
+                console.log(updated_images);
+                return res.render("templates/index.ejs", {
+                    page: "../pages/posts.ejs",
+                    title: "Posts",
+                    isProfilePage: false,
+                    isUsersPage: false,
+                    uploadDisplay: true,
+                    images: updated_images
+                });
             });
         });
     });
