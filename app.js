@@ -160,9 +160,17 @@ app.post("/login", passport.authenticate('local', {
 }));
 
 app.post("/register", async (req, res) => {
+    let errorMessage;
     //console.log("Request details from /register", req);
     try {
         let { user_display_name, username, user_email, user_bio } = req.body;
+
+        if (req.body.user_password.length < 8) {
+            errorMessage = "Password must be at least 8 characters"
+            req.flash('error', errorMessage);
+            return res.redirect("/register");
+        }
+        
         const hashedPassword = await bcrypt.hash(req.body.user_password, 10);
         const user_password = hashedPassword;
 
@@ -180,7 +188,6 @@ app.post("/register", async (req, res) => {
         connection.query("INSERT INTO users SET ?", user, (err, results) => {
             if (err) {
                 console.error("Unable to add user details in database", err);
-                let errorMessage;
                 if (err.sqlMessage.includes('user_email')) {
                     errorMessage = "This email is already in use.";
                 }
