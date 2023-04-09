@@ -364,8 +364,8 @@ app.get("/users/:username/posts", checkAuthenticated, (req, res) => {
                         page: "../pages/profile.ejs",
                         title: "User Posts",
                         uploadDisplay: true,
-                        isProfilePage: false,
-                        isUsersPage: true,
+                        isProfilePage: true,
+                        isUsersPage: false,
                         user: results[0],
                         images: updated_images
                     });

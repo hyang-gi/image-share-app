@@ -1,4 +1,5 @@
 <div id="user-list">
+  <% if (users.length !=0) { %>
   <% users.forEach(user=> { %>
       <a href="/users/<%= user.username %>/posts">
         <div class="user-card">
@@ -15,4 +16,12 @@
       </a>
       <div class="card-spacer"></div>
     <% }); %>
+      <% } else { %>
+        <div class="no-posts-container">
+          <div class="unknown-container">
+              <img class="sticker" src="/images/error_ramen.png" alt="unknown page sticker">
+              <p>Hmm, looks like there are no users yet!</p>
+          </div>
+      </div>
+      <% } %>
 </div>
