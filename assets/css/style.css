@@ -366,3 +366,10 @@ a {
 .comment-spacer {
   padding: 0.25rem;
 }
+
+/* Footer Styling */
+
+footer p {
+  text-align: center;
+  color: var(--faded);
+}
