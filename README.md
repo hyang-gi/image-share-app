@@ -33,3 +33,10 @@ The application must comprise the following features:
 * Create static pages 
 * Add routes for the required pages
 * Login and Password authorisation checks
+* Adding routes with database connected 
+* Uploading pictures functionality - extensions and file size checks included
+* Functionality to view all users
+* Functionality to view each user and their post, respectively
+* Static page support for likes/comments for design 
+* Added routes/support to view a single post 
+* Comments functionality 
