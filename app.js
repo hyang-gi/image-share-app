@@ -276,19 +276,29 @@ app.get("/profile", checkAuthenticated, (req, res) => {
                 }
                 console.log("comment count results", comment_results);
                 const commentCountMap = new Map(comment_results.map(result => [result.interaction_img_id, result.comment_count]));
-                const updated_images = img_results.map(img => ({
-                    ...img,
-                    comment_count: commentCountMap.get(img.image_display_id) || 0
-                }));
-                console.log(updated_images);
-                return res.render("templates/index.ejs", {
-                    page: "../pages/profile.ejs",
-                    title: "Profile",
-                    uploadDisplay: true,
-                    isProfilePage: true,
-                    isUsersPage: false,
-                    user: results[0],
-                    images: updated_images
+
+                connection.query('SELECT COUNT(*) AS like_count, interaction_img_id FROM interactions WHERE interaction_type = 1 GROUP BY interaction_img_id', (error, like_results) => {
+                    if (error) {
+                        console.log("Unable to get likes count", error);
+                        throw error;
+                    }
+                    console.log("like count results", like_results);
+                    const likeCountMap = new Map(like_results.map(result => [result.interaction_img_id, result.like_count]));
+                    const updated_images = img_results.map(img => ({
+                        ...img,
+                        comment_count: commentCountMap.get(img.image_display_id) || 0,
+                        like_count: likeCountMap.get(img.image_display_id) || 0
+                    }));
+                    console.log(updated_images);
+                    return res.render("templates/index.ejs", {
+                        page: "../pages/profile.ejs",
+                        title: "Profile",
+                        uploadDisplay: true,
+                        isProfilePage: true,
+                        isUsersPage: false,
+                        user: results[0],
+                        images: updated_images
+                    });
                 });
             });
         });
@@ -340,15 +350,29 @@ app.get("/users/:username/posts", checkAuthenticated, (req, res) => {
                     ...img,
                     comment_count: commentCountMap.get(img.image_display_id) || 0
                 }));
-                console.log(updated_images);
-                return res.render("templates/index.ejs", {
-                    page: "../pages/profile.ejs",
-                    title: "User Posts",
-                    uploadDisplay: true,
-                    isProfilePage: false,
-                    isUsersPage: true,
-                    user: results[0],
-                    images: updated_images
+
+                connection.query('SELECT COUNT(*) AS like_count, interaction_img_id FROM interactions WHERE interaction_type = 1 GROUP BY interaction_img_id', (error, like_results) => {
+                    if (error) {
+                        console.log("Unable to get likes count", error);
+                        throw error;
+                    }
+                    console.log("like count results", like_results);
+                    const likeCountMap = new Map(like_results.map(result => [result.interaction_img_id, result.like_count]));
+                    const updated_images = img_results.map(img => ({
+                        ...img,
+                        comment_count: commentCountMap.get(img.image_display_id) || 0,
+                        like_count: likeCountMap.get(img.image_display_id) || 0
+                    }));
+                    console.log(updated_images);
+                    return res.render("templates/index.ejs", {
+                        page: "../pages/profile.ejs",
+                        title: "User Posts",
+                        uploadDisplay: true,
+                        isProfilePage: false,
+                        isUsersPage: true,
+                        user: results[0],
+                        images: updated_images
+                    });
                 });
             });
         });
@@ -365,31 +389,36 @@ app.get("/posts/:post_id", (req, res) => {
             throw error;
         }
         console.log("image results", img_results[0]);
-        connection.query('SELECT COUNT(*) AS num_comments FROM interactions WHERE interaction_img_id = ? AND interaction_type = 2', [post_id], (error, count_result) => {
+        connection.query(`SELECT 
+            SUM(CASE WHEN interaction_type = 1 THEN 1 ELSE 0 END) AS num_likes,
+            SUM(CASE WHEN interaction_type = 2 THEN 1 ELSE 0 END) AS num_comments
+                         FROM interactions
+                                WHERE interaction_img_id = ? `, [post_id], (error, count_result) => {
             if (error) {
-                console.log("Unable to get interactions count", error);
+            console.log("Unable to get interactions count", error);
+            throw error;
+        }
+        console.log("interaction_count", count_result);
+        connection.query('SELECT * FROM interactions WHERE interaction_img_id = ?', [post_id], (error, interactions_results) => {
+            if (error) {
+                console.log("Unable to get user", error);
                 throw error;
             }
-            console.log("interaction_count", count_result);
-            connection.query('SELECT * FROM interactions WHERE interaction_img_id = ?', [post_id], (error, interactions_results) => {
-                if (error) {
-                    console.log("Unable to get user", error);
-                    throw error;
-                }
-                console.log("image results", img_results);
-                return res.render("templates/index.ejs", {
-                    page: "../pages/viewPost.ejs",
-                    title: "View Post",
-                    uploadDisplay: true,
-                    isProfilePage: false,
-                    isUsersPage: false,
-                    image: img_results[0],
-                    comments: interactions_results,
-                    comment_num: count_result[0].num_comments
-                });
+            console.log("image results", img_results);
+            return res.render("templates/index.ejs", {
+                page: "../pages/viewPost.ejs",
+                title: "View Post",
+                uploadDisplay: true,
+                isProfilePage: false,
+                isUsersPage: false,
+                image: img_results[0],
+                comment_num: count_result[0].num_comments,
+                likes_num: count_result[0].num_likes,
+                comments: interactions_results
             });
         });
     });
+});
 });
 
 /* Upload Post Request */
