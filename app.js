@@ -316,22 +316,30 @@ app.get("/posts/:post_id", (req, res) => {
             throw error;
         }
         console.log("image results", img_results[0]);
-        connection.query('SELECT * FROM interactions WHERE interaction_img_id = ?', [post_id], (error, interactions_results) => {
+        connection.query('SELECT COUNT(*) AS num_comments FROM interactions WHERE interaction_img_id = ?', [post_id], (error, count_result) => {
             if (error) {
-                console.log("Unable to get user", error);
+                console.log("Unable to get interactions count", error);
                 throw error;
             }
-            console.log("image results", img_results);
-            return res.render("templates/index.ejs", {
-                page: "../pages/viewPost.ejs",
-                title: "View Post",
-                uploadDisplay: true,
-                isProfilePage: false,
-                isUsersPage: false,
-                image: img_results[0],
-                comments: interactions_results
+            console.log("interaction_count", count_result);
+            connection.query('SELECT * FROM interactions WHERE interaction_img_id = ?', [post_id], (error, interactions_results) => {
+                if (error) {
+                    console.log("Unable to get user", error);
+                    throw error;
+                }
+                console.log("image results", img_results);
+                return res.render("templates/index.ejs", {
+                    page: "../pages/viewPost.ejs",
+                    title: "View Post",
+                    uploadDisplay: true,
+                    isProfilePage: false,
+                    isUsersPage: false,
+                    image: img_results[0],
+                    comments: interactions_results,
+                    comment_num: count_result[0].num_comments
+                });
             });
-        });
+    });
     });
 });
 
