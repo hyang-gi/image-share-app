@@ -34,20 +34,12 @@
             </div>
             <hr>
             <div class="comment-spacer"></div>
-            <a class="comment-username" href="/users/<%= image[0].image_uploaded_by %>/posts"><span>@<%=
-                        image[0].image_uploaded_by %></span></a>
-            <br>
-            <div class="comment-caption">
-                <span>
-                    <%= image[0].image_caption %>
-                </span>
-            </div>
-            <hr>
-            <div class="comment-spacer"></div>
         </div>
     </div>
     <form action="/comment" method="post" enctype="multipart/form-data">
-        <textarea class="input-box" type="text" id="image_reply" name="caption"
+        <input type="hidden" name="post_id" value="<%= image[0].image_display_id %>">
+        <input type="hidden" name="type" value="2">
+        <textarea class="input-box" type="text" id="image_comment" name="comment"
             placeholder="Your comment goes here..."></textarea>
         <button class="primary-button" type="submit">Add Comment</button>
     </form>

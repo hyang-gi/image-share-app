@@ -170,7 +170,7 @@ app.post("/register", async (req, res) => {
             req.flash('error', errorMessage);
             return res.redirect("/register");
         }
-        
+
         const hashedPassword = await bcrypt.hash(req.body.user_password, 10);
         const user_password = hashedPassword;
 
@@ -394,6 +394,27 @@ app.post("/upload", checkAuthenticated, async (req, res) => {
 });
 
 /* Add Comment POST Request */
+
+app.post("/comment", (req, res) => {
+    const { post_id, type, comment } = req.body;
+    const comments = {
+        interaction_img_id: post_id,
+        interaction_type: type,
+        interaction_text: comment,
+        interaction_by: req.user.username
+    };
+
+    console.log("comment post block:", comments);
+    connection.query("INSERT INTO interactions SET ?", comments, (err, results) => {
+        if (err) {
+            console.error("Comment not added!", err);
+            return res.redirect(`/posts/${post_id}`);
+        } else {
+            console.log("Comment added successfully!", results);
+            return res.redirect(`/posts/${post_id}`);
+        }
+    });
+});
 
 /* Like POST Request */
 
