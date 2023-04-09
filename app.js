@@ -346,10 +346,6 @@ app.get("/users/:username/posts", checkAuthenticated, (req, res) => {
                 }
                 console.log("comment count results", comment_results);
                 const commentCountMap = new Map(comment_results.map(result => [result.interaction_img_id, result.comment_count]));
-                const updated_images = img_results.map(img => ({
-                    ...img,
-                    comment_count: commentCountMap.get(img.image_display_id) || 0
-                }));
 
                 connection.query('SELECT COUNT(*) AS like_count, interaction_img_id FROM interactions WHERE interaction_type = 1 GROUP BY interaction_img_id', (error, like_results) => {
                     if (error) {
