@@ -312,17 +312,17 @@ app.get("/posts/:post_id", (req, res) => {
     console.log("post id GET REQ", post_id)
     connection.query('SELECT * FROM images WHERE image_display_id = ?', [post_id], (error, img_results) => {
         if (error) {
-            console.log("Unable to get user", error);
+            console.log("Unable to get post", error);
             throw error;
         }
-        console.log("image results", img_results);
+        console.log("image results", img_results[0]);
         return res.render("templates/index.ejs", {
             page: "../pages/viewPost.ejs",
             title: "View Post",
             uploadDisplay: true,
             isProfilePage: true,
             isUsersPage: false,
-            image: img_results
+            image: img_results[0]
         });
     });
 });
