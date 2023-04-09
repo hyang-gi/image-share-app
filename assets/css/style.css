@@ -128,7 +128,7 @@ li a {
 }
 
 .unknown-container {
-  background-color: var(--light);
+  background-color: var(--bg);
   color: var(--dark);
 }
 
