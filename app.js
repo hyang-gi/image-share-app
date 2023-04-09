@@ -316,13 +316,21 @@ app.get("/posts/:post_id", (req, res) => {
             throw error;
         }
         console.log("image results", img_results[0]);
-        return res.render("templates/index.ejs", {
-            page: "../pages/viewPost.ejs",
-            title: "View Post",
-            uploadDisplay: true,
-            isProfilePage: true,
-            isUsersPage: false,
-            image: img_results[0]
+        connection.query('SELECT * FROM interactions WHERE interaction_img_id = ?', [post_id], (error, interactions_results) => {
+            if (error) {
+                console.log("Unable to get user", error);
+                throw error;
+            }
+            console.log("image results", img_results);
+            return res.render("templates/index.ejs", {
+                page: "../pages/viewPost.ejs",
+                title: "View Post",
+                uploadDisplay: true,
+                isProfilePage: false,
+                isUsersPage: false,
+                image: img_results[0],
+                comments: interactions_results
+            });
         });
     });
 });

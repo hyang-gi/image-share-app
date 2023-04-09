@@ -23,24 +23,35 @@
     </div>
     <div class="title2"><span>Comments</span></div>
     <div class="comments-container">
-        <div class="comment-card">
-            <a class="comment-username" href="/users/<%= image.image_uploaded_by %>/posts"><span>@<%=
-                        image.image_uploaded_by %></span></a>
-            <br>
-            <div class="comment-caption">
-                <span>
-                    <%= image.image_caption %>
-                </span>
-            </div>
-            <hr>
-            <div class="comment-spacer"></div>
-        </div>
+        <% if(comments.length !==0) { %>
+            <% comments.forEach(comment=> { %>
+                <div class="comment-card">
+                    <a class="comment-username" href="/users/<%= comment.interaction_by %>/posts"><span>@<%=
+                                comment.interaction_by %></span></a>
+                    <br>
+                    <div class="comment-caption">
+                        <span>
+                            <%= comment.interaction_text %>
+                        </span>
+                    </div>
+                    <hr>
+                    <div class="comment-spacer"></div>
+                    <% }); %>
+                </div>
+                <% } else { %>
+                    <div class="comment-card">
+                        <span>It's quite lonely here, isn't it? Add a comment!</span>
+                        <div class="comment-spacer"></div>
+                    </div>
+                    <% } %>
     </div>
-    <form action="/comment" method="post" enctype="multipart/form-data">
-        <input type="hidden" name="post_id" value="<%= image.image_display_id %>">
-        <input type="hidden" name="type" value="2">
-        <textarea class="input-box" type="text" id="image_comment" name="comment"
-            placeholder="Your comment goes here..."></textarea>
-        <button class="primary-button" type="submit">Add Comment</button>
-    </form>
+    <div class="comment-form-container">
+        <form action="/comment" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="post_id" value="<%= image.image_display_id %>">
+            <input type="hidden" name="type" value="2">
+            <textarea class="input-box" type="text" id="image_comment" name="comment"
+                placeholder="Your comment goes here..."></textarea>
+            <button class="primary-button" type="submit">Add Comment</button>
+        </form>
+    </div>
 </div>
