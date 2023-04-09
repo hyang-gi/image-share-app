@@ -112,13 +112,26 @@ app.get("/", (req, res) => {
             throw error;
         }
         console.log("fetched images go here", results);
-        return res.render("templates/index.ejs", {
-            page: "../pages/posts.ejs",
-            title: "Posts",
-            isProfilePage: false,
-            isUsersPage: false,
-            uploadDisplay: true,
-            images: results
+        connection.query('SELECT COUNT(*) AS comment_count, interaction_img_id FROM interactions WHERE interaction_type = 2 GROUP BY interaction_img_id', (error, comment_results) => {
+            if (error) {
+                console.log("Unable to get comments count", error);
+                throw error;
+            }
+            console.log("comment count results", comment_results);
+            const commentCountMap = new Map(comment_results.map(result => [result.interaction_img_id, result.comment_count]));
+            const updated_images = results.map(img => ({
+                ...img,
+                comment_count: commentCountMap.get(img.image_display_id) || 0
+            }));
+            console.log(updated_images);
+            return res.render("templates/index.ejs", {
+                page: "../pages/posts.ejs",
+                title: "Posts",
+                isProfilePage: false,
+                isUsersPage: false,
+                uploadDisplay: true,
+                images: updated_images
+            });
         });
     });
 });
@@ -246,14 +259,27 @@ app.get("/profile", checkAuthenticated, (req, res) => {
                 throw error;
             }
             console.log("image results", img_results);
-            return res.render("templates/index.ejs", {
-                page: "../pages/profile.ejs",
-                title: "Profile",
-                uploadDisplay: true,
-                isProfilePage: true,
-                isUsersPage: false,
-                user: results[0],
-                images: img_results
+            connection.query('SELECT COUNT(*) AS comment_count, interaction_img_id FROM interactions WHERE interaction_type = 2 GROUP BY interaction_img_id', (error, comment_results) => {
+                if (error) {
+                    console.log("Unable to get comments count", error);
+                    throw error;
+                }
+                console.log("comment count results", comment_results);
+                const commentCountMap = new Map(comment_results.map(result => [result.interaction_img_id, result.comment_count]));
+                const updated_images = img_results.map(img => ({
+                    ...img,
+                    comment_count: commentCountMap.get(img.image_display_id) || 0
+                }));
+                console.log(updated_images);
+                return res.render("templates/index.ejs", {
+                    page: "../pages/profile.ejs",
+                    title: "Profile",
+                    uploadDisplay: true,
+                    isProfilePage: true,
+                    isUsersPage: false,
+                    user: results[0],
+                    images: updated_images
+                });
             });
         });
     });
@@ -293,14 +319,27 @@ app.get("/users/:username/posts", checkAuthenticated, (req, res) => {
                 throw error;
             }
             console.log("image results", img_results);
-            return res.render("templates/index.ejs", {
-                page: "../pages/profile.ejs",
-                title: "User Posts",
-                uploadDisplay: true,
-                isProfilePage: true,
-                isUsersPage: false,
-                user: results[0],
-                images: img_results
+            connection.query('SELECT COUNT(*) AS comment_count, interaction_img_id FROM interactions WHERE interaction_type = 2 GROUP BY interaction_img_id', (error, comment_results) => {
+                if (error) {
+                    console.log("Unable to get comments count", error);
+                    throw error;
+                }
+                console.log("comment count results", comment_results);
+                const commentCountMap = new Map(comment_results.map(result => [result.interaction_img_id, result.comment_count]));
+                const updated_images = img_results.map(img => ({
+                    ...img,
+                    comment_count: commentCountMap.get(img.image_display_id) || 0
+                }));
+                console.log(updated_images);
+                return res.render("templates/index.ejs", {
+                    page: "../pages/profile.ejs",
+                    title: "User Posts",
+                    uploadDisplay: true,
+                    isProfilePage: false,
+                    isUsersPage: true,
+                    user: results[0],
+                    images: updated_images
+                });
             });
         });
     });
@@ -316,7 +355,7 @@ app.get("/posts/:post_id", (req, res) => {
             throw error;
         }
         console.log("image results", img_results[0]);
-        connection.query('SELECT COUNT(*) AS num_comments FROM interactions WHERE interaction_img_id = ?', [post_id], (error, count_result) => {
+        connection.query('SELECT COUNT(*) AS num_comments FROM interactions WHERE interaction_img_id = ? AND interaction_type = 2', [post_id], (error, count_result) => {
             if (error) {
                 console.log("Unable to get interactions count", error);
                 throw error;
@@ -339,7 +378,7 @@ app.get("/posts/:post_id", (req, res) => {
                     comment_num: count_result[0].num_comments
                 });
             });
-    });
+        });
     });
 });
 
