@@ -94,7 +94,6 @@ app.use(
     })
 );
 
-const uniqueId = uuidv4();
 
 /* Check for user object */
 
@@ -485,7 +484,7 @@ app.post("/upload", checkAuthenticated, async (req, res) => {
 
 /* Add Comment POST Request */
 
-app.post("/comment", (req, res) => {
+app.post("/comment", checkAuthenticated, (req, res) => {
     const { post_id, type, comment } = req.body;
     const comments = {
         interaction_img_id: post_id,
