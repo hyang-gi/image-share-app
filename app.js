@@ -465,6 +465,11 @@ app.post("/upload", checkAuthenticated, async (req, res) => {
 
 app.post("/comment", checkAuthenticated, (req, res) => {
     const { post_id, type, comment } = req.body;
+
+    if(comment.trim() === '') {
+         return res.redirect(`/posts/${post_id}?error=Comment cannot be empty`);
+      }
+
     const comments = {
         interaction_img_id: post_id,
         interaction_type: type,
