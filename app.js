@@ -312,7 +312,7 @@ app.get("/profile", checkAuthenticated, (req, res) => {
 app.get("/users", checkAuthenticated, async (req, res) => {
     //return res.render("pages/users.ejs");
     try {
-        const [results, fields] = await connection.promise().query('SELECT * FROM use1rs');
+        const [results, fields] = await connection.promise().query('SELECT * FROM users');
         console.log("users go here", results);
         return res.render("templates/index.ejs", {
             page: "../pages/users.ejs",
@@ -333,55 +333,23 @@ app.get("/users", checkAuthenticated, async (req, res) => {
     }
 });
 
+//Future Work: both queries can be launcehd at once, wait for all the promises to resolve, the queries happen in order rn;
 
-app.get("/users/:username/posts", checkAuthenticated, (req, res) => {
+app.get("/users/:username/posts", checkAuthenticated, async (req, res) => {
     const username = req.params.username;
     console.log("username for /users/username", username);
-    connection.query('SELECT * FROM users WHERE username = ?', [username], (error, results) => {
-        if (error) {
-            console.log("Unable to get user", error);
-            throw error;
-        }
-        console.log("user details", results[0]);
-        connection.query('SELECT * FROM images WHERE image_uploaded_by = ?', [username], (error, img_results) => {
-            if (error) {
-                console.log("Unable to get user", error);
-                throw error;
-            }
-            console.log("image results", img_results);
-            connection.query('SELECT COUNT(*) AS comment_count, interaction_img_id FROM interactions WHERE interaction_type = 2 GROUP BY interaction_img_id', (error, comment_results) => {
-                if (error) {
-                    console.log("Unable to get comments count", error);
-                    throw error;
-                }
-                console.log("comment count results", comment_results);
-                const commentCountMap = new Map(comment_results.map(result => [result.interaction_img_id, result.comment_count]));
-
-                connection.query('SELECT COUNT(*) AS like_count, interaction_img_id FROM interactions WHERE interaction_type = 1 GROUP BY interaction_img_id', (error, like_results) => {
-                    if (error) {
-                        console.log("Unable to get likes count", error);
-                        throw error;
-                    }
-                    console.log("like count results", like_results);
-                    const likeCountMap = new Map(like_results.map(result => [result.interaction_img_id, result.like_count]));
-                    const updated_images = img_results.map(img => ({
-                        ...img,
-                        comment_count: commentCountMap.get(img.image_display_id) || 0,
-                        like_count: likeCountMap.get(img.image_display_id) || 0
-                    }));
-                    console.log(updated_images);
-                    return res.render("templates/index.ejs", {
-                        page: "../pages/profile.ejs",
-                        title: "User Posts",
-                        uploadDisplay: true,
-                        isProfilePage: true,
-                        isUsersPage: false,
-                        user: results[0],
-                        images: updated_images
-                    });
-                });
-            });
-        });
+    const [results] = await connection.promise().query('SELECT * FROM users WHERE username = ?', [username]);
+    console.log("user details", results[0]);
+    const [updated_images] = await connection.promise().query('SELECT * FROM vw_image_interaction_summaries WHERE image_uploaded_by = ?', [username]);
+    console.log(updated_images);
+    return res.render("templates/index.ejs", {
+        page: "../pages/profile.ejs",
+        title: "User Posts",
+        uploadDisplay: true,
+        isProfilePage: true,
+        isUsersPage: false,
+        user: results[0],
+        images: updated_images
     });
 });
 
