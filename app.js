@@ -131,7 +131,6 @@ app.get("/login", (req, res) => {
         page: "../pages/login.ejs",
         title: "Login",
     });
-    //return res.render("pages/login.ejs");
 });
 
 app.get("/register", (req, res) => {
@@ -147,7 +146,6 @@ app.get("/logout", (req, res) => {
         page: "../pages/logout.ejs",
         title: "Logout",
     });
-    // return res.render("pages/login.ejs");
 });
 
 
@@ -262,10 +260,9 @@ app.get("/profile", checkAuthenticated, async (req, res) => {
     }
 });
 
-//#To-Do: Try catch for connection.promise, myFaultPage render
+//#To-Do: myFaultPage render
 
 app.get("/users", checkAuthenticated, async (req, res) => {
-    //return res.render("pages/users.ejs");
     try {
         const [results, fields] = await dbConnection.query('SELECT * FROM users');
         console.log("users go here", results);
@@ -442,19 +439,6 @@ function checkAuthenticated(req, res, next) {
         return next();
     }
     res.redirect('/login');
-}
-
-function fileTooBig(req, res, next) {
-    console.log("File too big block!");
-    return res.render("templates", {
-        user: req.user,
-        messages: { error: "File size exceeds 2MB!" },
-        page: "../pages/uploadImage.ejs",
-        title: "Upload Image",
-        isProfilePage: false,
-        isUsersPage: false,
-        uploadDisplay: false,
-    });
 }
 
 /* Define display for undefined routes */
