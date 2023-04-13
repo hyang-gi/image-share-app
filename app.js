@@ -98,45 +98,27 @@ app.use((req, res, next) => {
 
 /* Landing page GET request */
 
-app.get("/", (req, res) => {
-    connection.query('SELECT * FROM images ORDER BY image_uploaded_on DESC', (error, results) => {
-        if (error) {
-            console.log("unable to fetch the images");
-            throw error;
-        }
+app.get("/", async (req, res) => {
+    try {
+        const [results] = await connection.promise().query('SELECT * FROM vw_image_interaction_summaries ORDER BY image_uploaded_on DESC');
         console.log("fetched images go here", results);
-        connection.query('SELECT COUNT(*) AS comment_count, interaction_img_id FROM interactions WHERE interaction_type = 2 GROUP BY interaction_img_id', (error, comment_results) => {
-            if (error) {
-                console.log("Unable to get comments count", error);
-                throw error;
-            }
-            console.log("comment count results", comment_results);
-            const commentCountMap = new Map(comment_results.map(result => [result.interaction_img_id, result.comment_count]));
-
-            connection.query('SELECT COUNT(*) AS like_count, interaction_img_id FROM interactions WHERE interaction_type = 1 GROUP BY interaction_img_id', (error, like_results) => {
-                if (error) {
-                    console.log("Unable to get likes count", error);
-                    throw error;
-                }
-                console.log("like count results", like_results);
-                const likeCountMap = new Map(like_results.map(result => [result.interaction_img_id, result.like_count]));
-                const updated_images = results.map(img => ({
-                    ...img,
-                    comment_count: commentCountMap.get(img.image_display_id) || 0,
-                    like_count: likeCountMap.get(img.image_display_id) || 0
-                }));
-                console.log(updated_images);
-                return res.render("templates/index.ejs", {
-                    page: "../pages/posts.ejs",
-                    title: "Posts",
-                    isProfilePage: false,
-                    isUsersPage: false,
-                    uploadDisplay: true,
-                    images: updated_images
-                });
-            });
+        return res.render("templates/index.ejs", {
+            page: "../pages/posts.ejs",
+            title: "Posts",
+            isProfilePage: false,
+            isUsersPage: false,
+            uploadDisplay: true,
+            images: results
         });
-    });
+    } catch (err) {
+        console.log(err);
+        res.status(500).render('templates', {
+            title: 'Sorry, Server Error',
+            uploadDisplay: false,
+            isProfilePage: false,
+            isUsersPage: false,
+        });
+    }
 });
 
 /* Authentication GET requests */
@@ -246,65 +228,36 @@ app.get("/upload", checkAuthenticated, (req, res) => {
     });
 });
 
-app.get("/profile", checkAuthenticated, (req, res) => {
+
+app.get("/profile", checkAuthenticated, async (req, res) => {
     const getUser = req.user.user_email;
     const getUsername = req.user.username;
     console.log("getUser for /profile", getUser);
-    connection.query('SELECT * FROM users WHERE user_email = ?', [getUser], (error, results) => {
-        if (error) {
-            console.log("Unable to get user", error);
-            throw error;
-        }
-        console.log("user details", results[0]);
-        connection.query('SELECT * FROM images WHERE image_uploaded_by = ?', [getUsername], (error, img_results) => {
-            if (error) {
-                console.log("Unable to get user", error);
-                throw error;
-            }
-            console.log("image results", img_results);
-            // connection.query('SELECT COUNT(*) AS comment_count, interaction_img_id FROM interactions WHERE interaction_type = 2 GROUP BY interaction_img_id', (error, comment_results) => {
-            //     if (error) {
-            //         console.log("Unable to get comments count", error);
-            //         throw error;
-            //     }
-            //     console.log("comment count results", comment_results);
-            //     const commentCountMap = new Map(comment_results.map(result => [result.interaction_img_id, result.comment_count]));
 
-            //     connection.query('SELECT COUNT(*) AS like_count, interaction_img_id FROM interactions WHERE interaction_type = 1 GROUP BY interaction_img_id', (error, like_results) => {
-            //         if (error) {
-            //             console.log("Unable to get likes count", error);
-            //             throw error;
-            //         }
-            //         console.log("like count results", like_results);
-            //         const likeCountMap = new Map(like_results.map(result => [result.interaction_img_id, result.like_count]));
-            //         const updated_images = img_results.map(img => ({
-            //             ...img,
-            //             comment_count: commentCountMap.get(img.image_display_id) || 0,
-            //             like_count: likeCountMap.get(img.image_display_id) || 0
-            //         }));
-            //         console.log(updated_images);
-            //         return res.render("templates/index.ejs", {
-            //             page: "../pages/profile.ejs",
-            //             title: "Profile",
-            //             uploadDisplay: true,
-            //             isProfilePage: true,
-            //             isUsersPage: false,
-            //             user: results[0],
-            //             images: updated_images
-            //         });
-            //     });
-            // });
-            return res.render("templates/index.ejs", {
-                page: "../pages/profile.ejs",
-                title: "Profile",
-                uploadDisplay: true,
-                isProfilePage: true,
-                isUsersPage: false,
-                user: results[0],
-                images: img_results
-            });
+    //used of nested queries removed to use await statements based on Ben's suggestion for code-optimisation
+    try {
+        const [user_results] = await connection.promise().query('SELECT * FROM users WHERE user_email = ?', [getUser]);
+        const [images] = await connection.promise().query('SELECT * FROM vw_image_interaction_summaries WHERE image_uploaded_by = ?', [getUsername]);
+
+        console.log("images go here", images);
+        return res.render("templates/index.ejs", {
+            page: "../pages/profile.ejs",
+            title: "Profile",
+            uploadDisplay: true,
+            isProfilePage: true,
+            isUsersPage: false,
+            user: user_results[0],
+            images: images
         });
-    });
+    } catch (err) {
+        console.log(err);
+        res.status(500).render('templates', {
+            title: 'Sorry, Server Error',
+            uploadDisplay: false,
+            isProfilePage: false,
+            isUsersPage: false,
+        });
+    }
 });
 
 //#To-Do: Try catch for connection.promise, myFaultPage render
@@ -354,45 +307,31 @@ app.get("/users/:username/posts", checkAuthenticated, async (req, res) => {
 });
 
 // TO-DO: add checkAuthenticated 
-app.get("/posts/:post_id", (req, res) => {
+app.get("/posts/:post_id", async (req, res) => {
     const post_id = req.params.post_id;
-    console.log("post id GET REQ", post_id)
-    connection.query('SELECT * FROM images WHERE image_display_id = ?', [post_id], (error, img_results) => {
-        if (error) {
-            console.log("Unable to get post", error);
-            throw error;
-        }
-        console.log("image results", img_results[0]);
-        connection.query(`SELECT 
-            SUM(CASE WHEN interaction_type = 1 THEN 1 ELSE 0 END) AS num_likes,
-            SUM(CASE WHEN interaction_type = 2 THEN 1 ELSE 0 END) AS num_comments
-                         FROM interactions
-                                WHERE interaction_img_id = ? `, [post_id], (error, count_result) => {
-            if (error) {
-                console.log("Unable to get interactions count", error);
-                throw error;
-            }
-            console.log("interaction_count", count_result);
-            connection.query('SELECT * FROM interactions WHERE interaction_img_id = ?', [post_id], (error, interactions_results) => {
-                if (error) {
-                    console.log("Unable to get user", error);
-                    throw error;
-                }
-                console.log("image results", img_results);
-                return res.render("templates/index.ejs", {
-                    page: "../pages/viewPost.ejs",
-                    title: "View Post",
-                    uploadDisplay: true,
-                    isProfilePage: false,
-                    isUsersPage: false,
-                    image: img_results[0],
-                    comment_num: count_result[0].num_comments,
-                    likes_num: count_result[0].num_likes,
-                    comments: interactions_results
-                });
-            });
+    console.log("post id GET REQ", post_id);
+    try {
+        const [img_results] = await connection.promise().query('SELECT * FROM vw_image_interaction_summaries WHERE image_display_id = ?', [post_id]);
+        const [comments] = await connection.promise().query('SELECT * FROM interactions WHERE interaction_img_id = ?', [post_id]);
+        console.log("image results", img_results);
+        return res.render("templates/index.ejs", {
+            page: "../pages/viewPost.ejs",
+            title: "View Post",
+            uploadDisplay: true,
+            isProfilePage: false,
+            isUsersPage: false,
+            image: img_results[0],
+            comments: comments
         });
-    });
+    } catch (err) {
+        console.log(err);
+        res.status(500).render('templates', {
+            title: 'Sorry, Server Error',
+            uploadDisplay: false,
+            isProfilePage: false,
+            isUsersPage: false,
+        });
+    }
 });
 
 /* Upload Post Request */
@@ -463,12 +402,12 @@ app.post("/upload", checkAuthenticated, async (req, res) => {
 
 /* Add Comment POST Request */
 
-app.post("/comment", checkAuthenticated, (req, res) => {
+app.post("/comment", checkAuthenticated, async (req, res) => {
     const { post_id, type, comment } = req.body;
 
-    if(comment.trim() === '') {
-         return res.redirect(`/posts/${post_id}?error=Comment cannot be empty`);
-      }
+    if (comment.trim() === '') {
+        return res.redirect(`/posts/${post_id}?error=Comment cannot be empty`);
+    }
 
     const comments = {
         interaction_img_id: post_id,
@@ -476,17 +415,21 @@ app.post("/comment", checkAuthenticated, (req, res) => {
         interaction_text: comment,
         interaction_by: req.user.username
     };
-
     console.log("comment post block:", comments);
-    connection.query("INSERT INTO interactions SET ?", comments, (err, results) => {
-        if (err) {
-            console.error("Comment not added!", err);
-            return res.redirect(`/posts/${post_id}`);
-        } else {
-            console.log("Comment added successfully!", results);
-            return res.redirect(`/posts/${post_id}`);
-        }
-    });
+    try {
+        const [results] = await connection.promise().query("INSERT INTO interactions SET ?", comments);
+        console.log("Comment added successfully!", results);
+        return res.redirect(`/posts/${post_id}`);
+
+    } catch (err) {
+        console.log(err);
+        res.status(500).render('templates', {
+            title: 'Sorry, Server Error',
+            uploadDisplay: false,
+            isProfilePage: false,
+            isUsersPage: false,
+        });
+    }
 });
 
 /* Like POST Request */
