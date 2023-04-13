@@ -48,10 +48,12 @@ function onConnectionReady(err) {
     }
 }
 
+const dbConnection = connection.promise();
+
 
 async function getUserByEmail(email) {
     console.log(email);
-    const [rows, fields] = await connection.promise().query('SELECT * FROM users WHERE user_email = ?', [email]);
+    const [rows, fields] = await dbConnection.query('SELECT * FROM users WHERE user_email = ?', [email]);
     console.log("Fetched user in getUserByEmail method", rows[0]);
     return rows[0];
 };
@@ -100,7 +102,7 @@ app.use((req, res, next) => {
 
 app.get("/", async (req, res) => {
     try {
-        const [results] = await connection.promise().query('SELECT * FROM vw_image_interaction_summaries ORDER BY image_uploaded_on DESC');
+        const [results] = await dbConnection.query('SELECT * FROM vw_image_interaction_summaries ORDER BY image_uploaded_on DESC');
         console.log("fetched images go here", results);
         return res.render("templates/index.ejs", {
             page: "../pages/posts.ejs",
@@ -236,8 +238,8 @@ app.get("/profile", checkAuthenticated, async (req, res) => {
 
     //used of nested queries removed to use await statements based on Ben's suggestion for code-optimisation
     try {
-        const [user_results] = await connection.promise().query('SELECT * FROM users WHERE user_email = ?', [getUser]);
-        const [images] = await connection.promise().query('SELECT * FROM vw_image_interaction_summaries WHERE image_uploaded_by = ?', [getUsername]);
+        const [user_results] = await dbConnection.query('SELECT * FROM users WHERE user_email = ?', [getUser]);
+        const [images] = await dbConnection.query('SELECT * FROM vw_image_interaction_summaries WHERE image_uploaded_by = ?', [getUsername]);
 
         console.log("images go here", images);
         return res.render("templates/index.ejs", {
@@ -265,7 +267,7 @@ app.get("/profile", checkAuthenticated, async (req, res) => {
 app.get("/users", checkAuthenticated, async (req, res) => {
     //return res.render("pages/users.ejs");
     try {
-        const [results, fields] = await connection.promise().query('SELECT * FROM users');
+        const [results, fields] = await dbConnection.query('SELECT * FROM users');
         console.log("users go here", results);
         return res.render("templates/index.ejs", {
             page: "../pages/users.ejs",
@@ -291,9 +293,9 @@ app.get("/users", checkAuthenticated, async (req, res) => {
 app.get("/users/:username/posts", checkAuthenticated, async (req, res) => {
     const username = req.params.username;
     console.log("username for /users/username", username);
-    const [results] = await connection.promise().query('SELECT * FROM users WHERE username = ?', [username]);
+    const [results] = await dbConnection.query('SELECT * FROM users WHERE username = ?', [username]);
     console.log("user details", results[0]);
-    const [updated_images] = await connection.promise().query('SELECT * FROM vw_image_interaction_summaries WHERE image_uploaded_by = ?', [username]);
+    const [updated_images] = await dbConnection.query('SELECT * FROM vw_image_interaction_summaries WHERE image_uploaded_by = ?', [username]);
     console.log(updated_images);
     return res.render("templates/index.ejs", {
         page: "../pages/profile.ejs",
@@ -311,8 +313,8 @@ app.get("/posts/:post_id", async (req, res) => {
     const post_id = req.params.post_id;
     console.log("post id GET REQ", post_id);
     try {
-        const [img_results] = await connection.promise().query('SELECT * FROM vw_image_interaction_summaries WHERE image_display_id = ?', [post_id]);
-        const [comments] = await connection.promise().query('SELECT * FROM interactions WHERE interaction_img_id = ?', [post_id]);
+        const [img_results] = await dbConnection.query('SELECT * FROM vw_image_interaction_summaries WHERE image_display_id = ?', [post_id]);
+        const [comments] = await dbConnection.query('SELECT * FROM interactions WHERE interaction_img_id = ?', [post_id]);
         console.log("image results", img_results);
         return res.render("templates/index.ejs", {
             page: "../pages/viewPost.ejs",
@@ -417,7 +419,7 @@ app.post("/comment", checkAuthenticated, async (req, res) => {
     };
     console.log("comment post block:", comments);
     try {
-        const [results] = await connection.promise().query("INSERT INTO interactions SET ?", comments);
+        const [results] = await dbConnection.query("INSERT INTO interactions SET ?", comments);
         console.log("Comment added successfully!", results);
         return res.redirect(`/posts/${post_id}`);
 
