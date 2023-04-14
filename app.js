@@ -53,7 +53,7 @@ const dbConnection = connection.promise();
 
 async function getUserByEmail(email) {
     console.log(email);
-    const [rows, fields] = await dbConnection.query('SELECT * FROM users WHERE user_email = ?', [email]);
+    const [rows, fields] = await dbConnection.query('SELECT * FROM user1s WHERE user_email = ?', [email]);
     console.log("Fetched user in getUserByEmail method", rows[0]);
     return rows[0];
 };
@@ -115,7 +115,8 @@ app.get("/", async (req, res) => {
     } catch (err) {
         console.log(err);
         res.status(500).render('templates', {
-            title: 'Sorry, Server Error',
+            title: 'Error',
+            errorPage: "../pages/serverError.ejs",
             uploadDisplay: false,
             isProfilePage: false,
             isUsersPage: false,
@@ -252,7 +253,8 @@ app.get("/profile", checkAuthenticated, async (req, res) => {
     } catch (err) {
         console.log(err);
         res.status(500).render('templates', {
-            title: 'Sorry, Server Error',
+            title: 'Error',
+            errorPage: "../pages/serverError.ejs",
             uploadDisplay: false,
             isProfilePage: false,
             isUsersPage: false,
@@ -277,7 +279,8 @@ app.get("/users", checkAuthenticated, async (req, res) => {
     } catch (err) {
         console.log(err);
         res.status(500).render('templates', {
-            title: 'Sorry, Server Error',
+            title: 'Error',
+            errorPage: "../pages/serverError.ejs",
             uploadDisplay: false,
             isProfilePage: false,
             isUsersPage: false,
@@ -325,7 +328,8 @@ app.get("/posts/:post_id", async (req, res) => {
     } catch (err) {
         console.log(err);
         res.status(500).render('templates', {
-            title: 'Sorry, Server Error',
+            title: 'Error',
+            errorPage: "../pages/serverError.ejs",
             uploadDisplay: false,
             isProfilePage: false,
             isUsersPage: false,
@@ -423,7 +427,8 @@ app.post("/comment", checkAuthenticated, async (req, res) => {
     } catch (err) {
         console.log(err);
         res.status(500).render('templates', {
-            title: 'Sorry, Server Error',
+            title: 'Error',
+            errorPage: "../pages/serverError.ejs",
             uploadDisplay: false,
             isProfilePage: false,
             isUsersPage: false,
