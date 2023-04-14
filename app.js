@@ -121,7 +121,7 @@ app.get("/", async (req, res) => {
             isProfilePage: false,
             isUsersPage: false,
         });
-    }
+    };
 });
 
 /* Authentication GET requests */
@@ -437,6 +437,16 @@ app.post("/comment", checkAuthenticated, async (req, res) => {
 });
 
 /* Like POST Request */
+
+app.post('/like', (req, res) => {
+    console.log("like functionality block");
+    /*
+    if the user clicks on like, check if the interaction for type like exists by this user on image_display_id
+    then, remove the interaction by deleting the data and change the button to empty like
+    else
+    update the table with this interaction
+    */
+})
 
 
 function checkAuthenticated(req, res, next) {
