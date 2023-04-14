@@ -114,13 +114,7 @@ app.get("/", async (req, res) => {
         });
     } catch (err) {
         console.log(err);
-        res.status(500).render('templates', {
-            title: 'Error',
-            errorPage: "../pages/serverError.ejs",
-            uploadDisplay: false,
-            isProfilePage: false,
-            isUsersPage: false,
-        });
+        showServerError(res);
     };
 });
 
@@ -252,13 +246,7 @@ app.get("/profile", checkAuthenticated, async (req, res) => {
         });
     } catch (err) {
         console.log(err);
-        res.status(500).render('templates', {
-            title: 'Error',
-            errorPage: "../pages/serverError.ejs",
-            uploadDisplay: false,
-            isProfilePage: false,
-            isUsersPage: false,
-        });
+        showServerError(res);
     }
 });
 
@@ -278,13 +266,7 @@ app.get("/users", checkAuthenticated, async (req, res) => {
         });
     } catch (err) {
         console.log(err);
-        res.status(500).render('templates', {
-            title: 'Error',
-            errorPage: "../pages/serverError.ejs",
-            uploadDisplay: false,
-            isProfilePage: false,
-            isUsersPage: false,
-        });
+        showServerError(res);
     }
 });
 
@@ -327,13 +309,7 @@ app.get("/posts/:post_id", async (req, res) => {
         });
     } catch (err) {
         console.log(err);
-        res.status(500).render('templates', {
-            title: 'Error',
-            errorPage: "../pages/serverError.ejs",
-            uploadDisplay: false,
-            isProfilePage: false,
-            isUsersPage: false,
-        });
+        showServerError(res);
     }
 });
 
@@ -426,13 +402,7 @@ app.post("/comment", checkAuthenticated, async (req, res) => {
 
     } catch (err) {
         console.log(err);
-        res.status(500).render('templates', {
-            title: 'Error',
-            errorPage: "../pages/serverError.ejs",
-            uploadDisplay: false,
-            isProfilePage: false,
-            isUsersPage: false,
-        });
+        showServerError(res);
     }
 });
 
@@ -454,6 +424,16 @@ function checkAuthenticated(req, res, next) {
         return next();
     }
     res.redirect('/login');
+}
+
+function showServerError(res) {
+    res.status(500).render('templates', {
+        title: 'Error',
+        errorPage: "../pages/serverError.ejs",
+        uploadDisplay: false,
+        isProfilePage: false,
+        isUsersPage: false,
+    });
 }
 
 /* Define display for undefined routes */
