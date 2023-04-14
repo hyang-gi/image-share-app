@@ -53,7 +53,7 @@ const dbConnection = connection.promise();
 
 async function getUserByEmail(email) {
     console.log(email);
-    const [rows, fields] = await dbConnection.query('SELECT * FROM user1s WHERE user_email = ?', [email]);
+    const [rows, fields] = await dbConnection.query('SELECT * FROM users WHERE user_email = ?', [email]);
     console.log("Fetched user in getUserByEmail method", rows[0]);
     return rows[0];
 };
