@@ -291,14 +291,17 @@ app.get("/users/:username/posts", checkAuthenticated, async (req, res) => {
 });
 
 // TO-DO: add checkAuthenticated 
-app.get("/posts/:post_id", async (req, res) => {
+app.get("/posts/:post_id", checkAuthenticated, async (req, res) => {
     const post_id = req.params.post_id;
     const error_msg = req.query.error ? req.query.error : '';
+    const username = req.user.username;
     console.log("post id GET REQ", post_id);
     try {
         const [img_results] = await dbConnection.query('SELECT * FROM vw_image_interaction_summaries WHERE image_display_id = ?', [post_id]);
-        const [comments] = await dbConnection.query('SELECT * FROM interactions WHERE interaction_img_id = ?', [post_id]);
+        const [interactions] = await dbConnection.query('SELECT * FROM interactions WHERE interaction_img_id = ?', [post_id]);
         console.log("image results", img_results);
+        const liked_by_user = interactions.find(interaction => interaction.interaction_type === 1 && interaction.interaction_by === username) !== undefined;
+        console.log("interaction results", interactions);
         return res.render("templates/index.ejs", {
             page: "../pages/viewPost.ejs",
             title: "View Post",
@@ -307,7 +310,8 @@ app.get("/posts/:post_id", async (req, res) => {
             isProfilePage: false,
             isUsersPage: false,
             image: img_results[0],
-            comments: comments
+            interactions: interactions,
+            liked_by_user
         });
     } catch (err) {
         console.log(err);
@@ -410,7 +414,7 @@ app.post("/comment", checkAuthenticated, async (req, res) => {
 
 /* Like POST Request */
 
-app.post('/like', (req, res) => {
+app.post('/like', async (req, res) => {
     console.log("like functionality block");
     /*
     if the user clicks on like, check if the interaction for type like exists by this user on image_display_id
@@ -418,8 +422,22 @@ app.post('/like', (req, res) => {
     else
     update the table with this interaction
     */
+    const { post_id } = req.body;
+   const getUser = req.user.username;
+   console.log(post_id, getUser);
+    try {
+        const [results] = await dbConnection.query('SELECT * FROM interactions WHERE interaction_by = ? AND interaction_img_id = ? AND interaction_type = ?', [getUser, post_id, '1']);
+        if (results.length > 0) {
+            await dbConnection.query('DELETE FROM interactions WHERE interaction_by = ? AND interaction_img_id = ? AND interaction_type = ?', [getUser, post_id, '1']);
+        } else {
+            await dbConnection.query('INSERT INTO interactions SET ?', {interaction_by: getUser, interaction_img_id: post_id, interaction_type: '1'});
+        }
+        return res.redirect(`/posts/${post_id}`);
+    } catch (err) {
+        console.log(err);
+        showServerError(res);
+    }
 })
-
 
 function checkAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {
