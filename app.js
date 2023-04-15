@@ -113,7 +113,7 @@ app.get("/", async (req, res) => {
                  LEFT JOIN interactions ON vw_image_interaction_summaries.image_display_id = interactions.interaction_img_id
                  WHERE interactions.interaction_by = ? AND interactions.interaction_type = '1'`,
                 [getUsername]);
-
+                console.log("all liked interactions in home", all_liked_interactions);
             authenticated_images = results.map(image => {
                 const liked = all_liked_interactions.find(interaction => interaction.image_display_id === image.image_display_id);
                 return {
@@ -308,15 +308,18 @@ app.get("/users", checkAuthenticated, async (req, res) => {
 app.get("/users/:username/posts", checkAuthenticated, async (req, res) => {
     const username = req.params.username;
     console.log("username for /users/username", username);
+    const loggedInUser = req.user.username;
     const [results] = await dbConnection.query('SELECT * FROM users WHERE username = ?', [username]);
     console.log("user details", results[0]);
+
     const [updated_images] = await dbConnection.query('SELECT * FROM vw_image_interaction_summaries WHERE image_uploaded_by = ? ORDER BY image_uploaded_on DESC', [username]);
     const [all_liked_interactions] = await dbConnection.query(
         `SELECT *
          FROM vw_image_interaction_summaries
          LEFT JOIN interactions ON vw_image_interaction_summaries.image_display_id = interactions.interaction_img_id
          WHERE interactions.interaction_by = ? AND interactions.interaction_type = '1'`,
-        [username]);
+        [loggedInUser]);
+
     // console.log({all_liked_interactions});
     // console.log({updated_images});
 
