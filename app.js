@@ -250,7 +250,7 @@ app.get("/profile", checkAuthenticated, async (req, res) => {
     //used of nested queries removed to use await statements based on Ben's suggestion for code-optimisation
     try {
         const [user_results] = await dbConnection.query('SELECT * FROM users WHERE user_email = ?', [getUser]);
-        const [image_results] = await dbConnection.query('SELECT * FROM vw_image_interaction_summaries WHERE image_uploaded_by = ?', [getUsername]);
+        const [image_results] = await dbConnection.query('SELECT * FROM vw_image_interaction_summaries WHERE image_uploaded_by = ? ORDER BY image_uploaded_on DESC', [getUsername]);
         const [all_liked_interactions] = await dbConnection.query(
             `SELECT *
              FROM vw_image_interaction_summaries
@@ -287,7 +287,7 @@ app.get("/profile", checkAuthenticated, async (req, res) => {
 
 app.get("/users", checkAuthenticated, async (req, res) => {
     try {
-        const [results, fields] = await dbConnection.query('SELECT * FROM users');
+        const [results, fields] = await dbConnection.query('SELECT * FROM users ORDER BY user_id DESC');
         console.log("users go here", results);
         return res.render("templates/index.ejs", {
             page: "../pages/users.ejs",
@@ -310,7 +310,7 @@ app.get("/users/:username/posts", checkAuthenticated, async (req, res) => {
     console.log("username for /users/username", username);
     const [results] = await dbConnection.query('SELECT * FROM users WHERE username = ?', [username]);
     console.log("user details", results[0]);
-    const [updated_images] = await dbConnection.query('SELECT * FROM vw_image_interaction_summaries WHERE image_uploaded_by = ?', [username]);
+    const [updated_images] = await dbConnection.query('SELECT * FROM vw_image_interaction_summaries WHERE image_uploaded_by = ? ORDER BY image_uploaded_on DESC', [username]);
     const [all_liked_interactions] = await dbConnection.query(
         `SELECT *
          FROM vw_image_interaction_summaries
