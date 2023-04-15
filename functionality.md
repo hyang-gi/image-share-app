@@ -46,6 +46,10 @@
 
 #### Likes
 
+* User can like a post
+* User can see if they have liked a post or not on all the page if logged in
+* User can unlike a post
+
 #### Message Display
 
 * On invalid authentication
