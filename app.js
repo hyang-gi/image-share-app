@@ -190,7 +190,7 @@ app.post("/register", async (req, res) => {
         const user_image_path = `/images/avatar/${user_image}`;
 
         if (user_bio == '') {
-            user_bio = "Looking for information on this user? Error 404!";
+            user_bio = "Error 404! This user was too lazy to type a bio";
         }
 
         const user = { user_display_name, username, user_email, user_password, user_bio, user_image_path };
