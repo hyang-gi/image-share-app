@@ -118,7 +118,7 @@ app.get("/", async (req, res) => {
                 const liked = all_liked_interactions.find(interaction => interaction.image_display_id === image.image_display_id);
                 return {
                     ...image,
-                    liked_by_user: liked,
+                    liked_by_user: !!liked,
                 };
             });
         }
@@ -262,7 +262,7 @@ app.get("/profile", checkAuthenticated, async (req, res) => {
             const liked = all_liked_interactions.find(interaction => interaction.image_display_id === image.image_display_id);
             return {
                 ...image,
-                liked_by_user: liked,
+                liked_by_user: !!liked,
             };
         });
         console.log({ images });
@@ -317,17 +317,17 @@ app.get("/users/:username/posts", checkAuthenticated, async (req, res) => {
          LEFT JOIN interactions ON vw_image_interaction_summaries.image_display_id = interactions.interaction_img_id
          WHERE interactions.interaction_by = ? AND interactions.interaction_type = '1'`,
         [username]);
-    // console.log(all_liked_interactions);
-    // console.log(updated_images);
+    // console.log({all_liked_interactions});
+    // console.log({updated_images});
 
     const images = updated_images.map(image => {
         const liked = all_liked_interactions.find(interaction => interaction.image_display_id === image.image_display_id);
         return {
             ...image,
-            liked_by_user: liked,
+            liked_by_user: !!liked,
         };
     });
-    console.log({ images });
+    console.log("images obj in users/username", images);
     return res.render("templates/index.ejs", {
         page: "../pages/profile.ejs",
         title: "User Posts",
