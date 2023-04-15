@@ -4,7 +4,7 @@ The above linked application has been developed for the second semester final as
 
 Below is a detailed description of the assignment criteria and the process followed.
 
-### [Application Functionality](https://github.com/hyang-gi/image-share-app/blob/main/functionality.md)
+#### [Application Functionality](https://github.com/hyang-gi/image-share-app/blob/main/functionality.md)
 
 ### Assignment Brief
 
