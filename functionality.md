@@ -57,6 +57,3 @@
 * When no accounts exist
 * When there are server issues
 * When user tries to access non-existent pages
-
-#### [Future Development](https://github.com/hyang-gi/image-share-app/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement)
-

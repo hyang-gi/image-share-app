@@ -44,3 +44,6 @@ The application must comprise the following features:
 * Comments functionality 
 * Optimisation of the nested queries (received help from [bennorth](https://github.com/bennorth) on database optimisation and alternate option for nested queries)
 * Likes functionality
+
+#### [Future Development](https://github.com/hyang-gi/image-share-app/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement)
+
