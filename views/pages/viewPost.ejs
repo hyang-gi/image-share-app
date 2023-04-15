@@ -40,52 +40,54 @@
                 </div>
             </div>
         </div>
-        <div class="title2"><span>Comments</span></div>
-        <% if (error_msg !='' ) { %>
-            <div class="error-message">
-                <%=error_msg %>
+        <% if(interactions.length==0) { %>
+            <div class="comment-card">
+                <span style="text-decoration: underline;">It's quite lonely here, isn't it? Like or add a
+                    comment!</span>
+                    <div class="comment-spacer"></div>
+                    <div class="comment-spacer"></div>
             </div>
-            <br>
             <% } %>
-                <div class="comments-container">
-                    <% if(interactions.length !==0) { %>
-                        <% interactions.forEach(comment=> { %>
-                            <% if (comment.interaction_text != null) { %>
-                            <div class="comment-card">
-                                <a class="comment-username" href="/users/<%= comment.interaction_by %>/posts"><span>@<%=
-                                            comment.interaction_by %></span></a>
-                                <br>
-                                <div class="comment-caption">
-                                    <span>
-                                        <%= comment.interaction_text %>
-                                    </span>
-                                </div>
-                                <hr>
-                                <div class="comment-spacer"></div>
+                <div class="title2"><span>Comments</span></div>
+                <% if (error_msg !='' ) { %>
+                    <div class="error-message">
+                        <%=error_msg %>
+                    </div>
+                    <br>
+                    <% } %>
+                        <div class="comments-container">
+                            <% interactions.forEach(comment=> { %>
+                                <% if (comment.interaction_text !=null) { %>
+                                    <div class="comment-card">
+                                        <a class="comment-username"
+                                            href="/users/<%= comment.interaction_by %>/posts"><span>@<%=
+                                                    comment.interaction_by %></span></a>
+                                        <br>
+                                        <div class="comment-caption">
+                                            <span>
+                                                <%= comment.interaction_text %>
+                                            </span>
+                                        </div>
+                                        <hr>
+                                        <div class="comment-spacer"></div>
+                                    </div>
+                                    <% } %>
+                                        <% }); %>
+                        </div>
+                        <div class="comment-form-container">
+                            <form action="/comment" method="post" enctype="multipart/form-data">
+                                <input type="hidden" name="post_id" value="<%= image.image_display_id %>">
+                                <input type="hidden" name="type" value="2">
+                                <textarea class="input-box" type="text" id="image_comment" name="comment"
+                                    placeholder="Your comment goes here..."></textarea>
+                                <button class="primary-button" type="submit">Add Comment</button>
+                            </form>
+                        </div>
+                        <% } else { %>
+                            <div class=" unknown-container">
+                                <img class="sticker" src="/images/unavailable.png" alt="unknown page sticker">
+                                <p>Why are you trying to access an image that doesn't exist?</p>
+                                <p>Go back, pls</p>
                             </div>
                             <% } %>
-                            <% }); %>
-                            <% } else { %>
-                                <div class="comment-card">
-                                    <span>It's quite lonely here, isn't it? Like or add a comment!</span>
-                                    <div class="comment-spacer"></div>
-                                </div>
-                                <% } %>
-                </div>
-                <div class="comment-form-container">
-                    <form action="/comment" method="post" enctype="multipart/form-data">
-                        <input type="hidden" name="post_id" value="<%= image.image_display_id %>">
-                        <input type="hidden" name="type" value="2">
-                        <textarea class="input-box" type="text" id="image_comment" name="comment"
-                            placeholder="Your comment goes here..."></textarea>
-                        <button class="primary-button" type="submit">Add Comment</button>
-                    </form>
-                </div>
-                <% } else { %>
-                    <div class=" unknown-container">
-                        <img class="sticker" src="/images/unavailable.png" alt="unknown page sticker">
-                        <p>Why are you trying to access an image that doesn't exist?</p>
-                        <p>Go back, pls</p>
-                    </div>
-                    <% } %>
 </div>
