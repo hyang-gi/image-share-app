@@ -25,6 +25,10 @@
             </div>
         </div>
         <div class="title2"><span>Comments</span></div>
+        <% if (error_msg != '') { %>
+            <div class="error-message"><%=error_msg %></div>
+            <br>
+          <% } %>
         <div class="comments-container">
             <% if(comments.length !==0) { %>
                 <% comments.forEach(comment=> { %>

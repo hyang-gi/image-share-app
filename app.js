@@ -293,6 +293,7 @@ app.get("/users/:username/posts", checkAuthenticated, async (req, res) => {
 // TO-DO: add checkAuthenticated 
 app.get("/posts/:post_id", async (req, res) => {
     const post_id = req.params.post_id;
+    const error_msg = req.query.error ? req.query.error : '';
     console.log("post id GET REQ", post_id);
     try {
         const [img_results] = await dbConnection.query('SELECT * FROM vw_image_interaction_summaries WHERE image_display_id = ?', [post_id]);
@@ -301,6 +302,7 @@ app.get("/posts/:post_id", async (req, res) => {
         return res.render("templates/index.ejs", {
             page: "../pages/viewPost.ejs",
             title: "View Post",
+            error_msg,
             uploadDisplay: true,
             isProfilePage: false,
             isUsersPage: false,
