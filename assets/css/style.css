@@ -311,8 +311,8 @@ a {
 
 .post-added-date {
   font-weight: 700;
-  color: var(--dark);
-  padding-left: 2rem;
+  color: var(--tertiary);
+  padding-left: 23rem;
 }
 
 .post-interaction {
