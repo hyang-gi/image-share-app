@@ -190,6 +190,7 @@ button {
 .hidden-button {
   background-color: none;
   padding: 0rem;
+  margin: 0rem;
 }
 
 .secondary-button {
