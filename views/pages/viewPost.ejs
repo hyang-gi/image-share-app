@@ -25,6 +25,9 @@
                 <img class="post-comment-icon" src="/images/comments.png" alt="like icon"><span class="post-comm-num">
                     <%= image.n_comments %>
                 </span>
+                <span class="post-added-date">
+                    <%= uploaded_on %>
+                </span>
             </div>
             <div class="posts-content">
                 <a class="posts-username" href="/users/<%= image.image_uploaded_by %>/posts"><span>@<%=

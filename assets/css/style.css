@@ -309,6 +309,12 @@ a {
   font-weight: 700;
 }
 
+.post-added-date {
+  font-weight: 700;
+  color: var(--dark);
+  padding-left: 2rem;
+}
+
 .post-interaction {
   display: flex;
   align-items: center;
