@@ -101,16 +101,34 @@ app.use((req, res, next) => {
 /* Landing page GET request */
 
 app.get("/", async (req, res) => {
+    let authenticated_images;
     try {
         const [results] = await dbConnection.query('SELECT * FROM vw_image_interaction_summaries ORDER BY image_uploaded_on DESC');
         console.log("fetched images go here", results);
+        if(req.isAuthenticated()) {
+            const getUsername = req.user.username;
+            const [all_liked_interactions] = await dbConnection.query(
+                `SELECT *
+                 FROM vw_image_interaction_summaries
+                 LEFT JOIN interactions ON vw_image_interaction_summaries.image_display_id = interactions.interaction_img_id
+                 WHERE interactions.interaction_by = ? AND interactions.interaction_type = '1'`,
+                [getUsername]);
+    
+             authenticated_images = results.map(image => {
+                const liked = all_liked_interactions.find(interaction => interaction.image_display_id === image.image_display_id);
+                return {
+                    ...image,
+                    liked_by_user: liked,
+                };
+            });
+        }
         return res.render("templates/index.ejs", {
             page: "../pages/posts.ejs",
             title: "Posts",
             isProfilePage: false,
             isUsersPage: false,
             uploadDisplay: true,
-            images: results
+            images: req.isAuthenticated() ? authenticated_images : results
         });
     } catch (err) {
         console.log(err);
