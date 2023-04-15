@@ -47,14 +47,16 @@
 #### Likes
 
 * User can like a post
-* User can see if they have liked a post or not on all the page if logged in
+* User can see if they have liked a post or not on all the pages (profile, users/:username, home) if logged in
 * User can unlike a post
 
-#### Message Display
+#### Message Display (UX)
 
 * On invalid authentication
 * When no posts are visible
 * When no accounts exist
 * When there are server issues
 * When user tries to access non-existent pages
+
+#### [Future Development](https://github.com/hyang-gi/image-share-app/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement)
 
