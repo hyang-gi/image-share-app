@@ -113,7 +113,7 @@ app.get("/", async (req, res) => {
                  LEFT JOIN interactions ON vw_image_interaction_summaries.image_display_id = interactions.interaction_img_id
                  WHERE interactions.interaction_by = ? AND interactions.interaction_type = '1'`,
                 [getUsername]);
-                console.log("all liked interactions in home", all_liked_interactions);
+            console.log("all liked interactions in home", all_liked_interactions);
             authenticated_images = results.map(image => {
                 const liked = all_liked_interactions.find(interaction => interaction.image_display_id === image.image_display_id);
                 return {
@@ -172,7 +172,6 @@ app.post("/login", passport.authenticate('local', {
 
 app.post("/register", async (req, res) => {
     let errorMessage;
-    //console.log("Request details from /register", req);
     try {
         let { user_display_name, username, user_email, user_bio } = req.body;
 
@@ -247,7 +246,6 @@ app.get("/profile", checkAuthenticated, async (req, res) => {
     const getUsername = req.user.username;
     console.log("getUser for /profile", getUser);
 
-    //used of nested queries removed to use await statements based on Ben's suggestion for code-optimisation
     try {
         const [user_results] = await dbConnection.query('SELECT * FROM users WHERE user_email = ?', [getUser]);
         const [image_results] = await dbConnection.query('SELECT * FROM vw_image_interaction_summaries WHERE image_uploaded_by = ? ORDER BY image_uploaded_on DESC', [getUsername]);
@@ -265,9 +263,8 @@ app.get("/profile", checkAuthenticated, async (req, res) => {
                 liked_by_user: !!liked,
             };
         });
-        console.log({ images });
 
-        console.log("images go here", images);
+        console.log("images on /profile go here", images);
         return res.render("templates/index.ejs", {
             page: "../pages/profile.ejs",
             title: "Profile",
@@ -283,7 +280,6 @@ app.get("/profile", checkAuthenticated, async (req, res) => {
     }
 });
 
-//#To-Do: myFaultPage render
 
 app.get("/users", checkAuthenticated, async (req, res) => {
     try {
@@ -303,8 +299,6 @@ app.get("/users", checkAuthenticated, async (req, res) => {
     }
 });
 
-//Future Work: both queries can be launcehd at once, wait for all the promises to resolve, the queries happen in order rn;
-
 app.get("/users/:username/posts", checkAuthenticated, async (req, res) => {
     const username = req.params.username;
     console.log("username for /users/username", username);
@@ -320,9 +314,6 @@ app.get("/users/:username/posts", checkAuthenticated, async (req, res) => {
          WHERE interactions.interaction_by = ? AND interactions.interaction_type = '1'`,
         [loggedInUser]);
 
-    // console.log({all_liked_interactions});
-    // console.log({updated_images});
-
     const images = updated_images.map(image => {
         const liked = all_liked_interactions.find(interaction => interaction.image_display_id === image.image_display_id);
         return {
@@ -330,7 +321,7 @@ app.get("/users/:username/posts", checkAuthenticated, async (req, res) => {
             liked_by_user: !!liked,
         };
     });
-    console.log("images obj in users/username", images);
+    // console.log("images obj in users/username", images);
     return res.render("templates/index.ejs", {
         page: "../pages/profile.ejs",
         title: "User Posts",
@@ -342,7 +333,6 @@ app.get("/users/:username/posts", checkAuthenticated, async (req, res) => {
     });
 });
 
-// TO-DO: add checkAuthenticated 
 app.get("/posts/:post_id", checkAuthenticated, async (req, res) => {
     const post_id = req.params.post_id;
     const error_msg = req.query.error ? req.query.error : '';
@@ -351,12 +341,13 @@ app.get("/posts/:post_id", checkAuthenticated, async (req, res) => {
     try {
         const [img_results] = await dbConnection.query('SELECT * FROM vw_image_interaction_summaries WHERE image_display_id = ?', [post_id]);
         const [interactions] = await dbConnection.query('SELECT * FROM interactions WHERE interaction_img_id = ?', [post_id]);
-        console.log("image results", img_results);
+
         const liked_by_user = interactions.find(interaction => interaction.interaction_type === 1 && interaction.interaction_by === username) !== undefined;
-        console.log("interaction results", interactions);
+
         const timestamp = img_results[0].image_uploaded_on;
         const date = new Date(timestamp);
         const uploaded_on = date.toDateString();
+
         return res.render("templates/index.ejs", {
             page: "../pages/viewPost.ejs",
             title: "View Post",
@@ -381,7 +372,7 @@ app.post("/upload", checkAuthenticated, async (req, res) => {
     const username = req.user.username;
     const image = req.files.pic;
     const img_details = req.body;
-    console.log({ img_details });
+    console.log("request from /upload POST route", img_details);
     image.name = Date.now() + image.name;
 
     if (acceptedTypes.indexOf(image.mimetype) >= 0) {
@@ -456,7 +447,7 @@ app.post("/comment", checkAuthenticated, async (req, res) => {
         interaction_text: comment,
         interaction_by: req.user.username
     };
-    console.log("comment post block:", comments);
+    // console.log("comment post block:", comments);
     try {
         const [results] = await dbConnection.query("INSERT INTO interactions SET ?", comments);
         console.log("Comment added successfully!", results);
@@ -472,12 +463,6 @@ app.post("/comment", checkAuthenticated, async (req, res) => {
 
 app.post('/like', async (req, res) => {
     console.log("like functionality block");
-    /*
-    if the user clicks on like, check if the interaction for type like exists by this user on image_display_id
-    then, remove the interaction by deleting the data and change the button to empty like
-    else
-    update the table with this interaction
-    */
     const { post_id } = req.body;
     const getUser = req.user.username;
     console.log(post_id, getUser);
