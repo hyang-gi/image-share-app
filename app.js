@@ -232,7 +232,22 @@ app.get("/profile", checkAuthenticated, async (req, res) => {
     //used of nested queries removed to use await statements based on Ben's suggestion for code-optimisation
     try {
         const [user_results] = await dbConnection.query('SELECT * FROM users WHERE user_email = ?', [getUser]);
-        const [images] = await dbConnection.query('SELECT * FROM vw_image_interaction_summaries WHERE image_uploaded_by = ?', [getUsername]);
+        const [image_results] = await dbConnection.query('SELECT * FROM vw_image_interaction_summaries WHERE image_uploaded_by = ?', [getUsername]);
+        const [all_liked_interactions] = await dbConnection.query(
+            `SELECT *
+             FROM vw_image_interaction_summaries
+             LEFT JOIN interactions ON vw_image_interaction_summaries.image_display_id = interactions.interaction_img_id
+             WHERE interactions.interaction_by = ? AND interactions.interaction_type = '1'`,
+            [getUsername]);
+
+        const images = image_results.map(image => {
+            const liked = all_liked_interactions.find(interaction => interaction.image_display_id === image.image_display_id);
+            return {
+                ...image,
+                liked_by_user: liked,
+            };
+        });
+        console.log({ images });
 
         console.log("images go here", images);
         return res.render("templates/index.ejs", {
@@ -278,7 +293,23 @@ app.get("/users/:username/posts", checkAuthenticated, async (req, res) => {
     const [results] = await dbConnection.query('SELECT * FROM users WHERE username = ?', [username]);
     console.log("user details", results[0]);
     const [updated_images] = await dbConnection.query('SELECT * FROM vw_image_interaction_summaries WHERE image_uploaded_by = ?', [username]);
-    console.log(updated_images);
+    const [all_liked_interactions] = await dbConnection.query(
+        `SELECT *
+         FROM vw_image_interaction_summaries
+         LEFT JOIN interactions ON vw_image_interaction_summaries.image_display_id = interactions.interaction_img_id
+         WHERE interactions.interaction_by = ? AND interactions.interaction_type = '1'`,
+        [username]);
+    // console.log(all_liked_interactions);
+    // console.log(updated_images);
+
+    const images = updated_images.map(image => {
+        const liked = all_liked_interactions.find(interaction => interaction.image_display_id === image.image_display_id);
+        return {
+            ...image,
+            liked_by_user: liked,
+        };
+    });
+    console.log({ images });
     return res.render("templates/index.ejs", {
         page: "../pages/profile.ejs",
         title: "User Posts",
@@ -286,7 +317,7 @@ app.get("/users/:username/posts", checkAuthenticated, async (req, res) => {
         isProfilePage: true,
         isUsersPage: false,
         user: results[0],
-        images: updated_images
+        images: images
     });
 });
 
@@ -423,14 +454,14 @@ app.post('/like', async (req, res) => {
     update the table with this interaction
     */
     const { post_id } = req.body;
-   const getUser = req.user.username;
-   console.log(post_id, getUser);
+    const getUser = req.user.username;
+    console.log(post_id, getUser);
     try {
         const [results] = await dbConnection.query('SELECT * FROM interactions WHERE interaction_by = ? AND interaction_img_id = ? AND interaction_type = ?', [getUser, post_id, '1']);
         if (results.length > 0) {
             await dbConnection.query('DELETE FROM interactions WHERE interaction_by = ? AND interaction_img_id = ? AND interaction_type = ?', [getUser, post_id, '1']);
         } else {
-            await dbConnection.query('INSERT INTO interactions SET ?', {interaction_by: getUser, interaction_img_id: post_id, interaction_type: '1'});
+            await dbConnection.query('INSERT INTO interactions SET ?', { interaction_by: getUser, interaction_img_id: post_id, interaction_type: '1' });
         }
         return res.redirect(`/posts/${post_id}`);
     } catch (err) {

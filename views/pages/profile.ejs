@@ -27,7 +27,12 @@
                 </div>
               </a>
               <div class="post-interaction">
-                <img class="post-like-icon" src="/images/like_before.png" alt="like icon"><span
+                <% if(!image.liked_by_user) { %>
+                      <img class="post-like-icon" src="/images/like_before.png" alt="like icon">
+                  <% } else { %>
+                          <img class="post-unlike-icon" src="/images/like_after.png" alt="like icon">
+                      <% } %>
+                <span
                   class="post-like-num"><%= image.n_likes %></span>
                 <img class="post-comment-icon" src="/images/comments.png" alt="like icon"><span
                   class="post-comm-num"><%= image.n_comments %></span>
