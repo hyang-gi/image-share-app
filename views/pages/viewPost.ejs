@@ -47,6 +47,7 @@
                 <div class="comments-container">
                     <% if(interactions.length !==0) { %>
                         <% interactions.forEach(comment=> { %>
+                            <% if (comment.interaction_text != null) { %>
                             <div class="comment-card">
                                 <a class="comment-username" href="/users/<%= comment.interaction_by %>/posts"><span>@<%=
                                             comment.interaction_by %></span></a>
@@ -58,8 +59,9 @@
                                 </div>
                                 <hr>
                                 <div class="comment-spacer"></div>
-                                <% }); %>
                             </div>
+                            <% } %>
+                            <% }); %>
                             <% } else { %>
                                 <div class="comment-card">
                                     <span>It's quite lonely here, isn't it? Add a comment!</span>
