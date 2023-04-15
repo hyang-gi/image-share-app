@@ -1,8 +1,10 @@
-## [Image Sharing Application](https:/scss.tcd.ie/~mohsins/cs7025/april_2023/myapp/)
+## Image Sharing Application
 
 The above linked application has been developed for the second semester final assignment for Programming for Digital Media module.
 
 Below is a detailed description of the assignment criteria and the process followed.
+
+### [Application Functionality](https://github.com/hyang-gi/image-share-app/blob/main/functionality.md)
 
 ### Assignment Brief
 
@@ -40,3 +42,5 @@ The application must comprise the following features:
 * Static page support for likes/comments for design 
 * Added routes/support to view a single post 
 * Comments functionality 
+* Optimisation of the nested queries (received help from @bennorth on database optimisation and alternate option for nested queries)
+* Likes functionality
