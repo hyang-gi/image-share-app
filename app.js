@@ -510,7 +510,7 @@ app.use((req, res, next) => {
 
 /* Setup Server */
 
-app.listen(PORT, () => {
+app.listen(process.env.PORT || PORT, () => {
     console.log(`Server listening on Port: ${PORT}`);
 });
 
