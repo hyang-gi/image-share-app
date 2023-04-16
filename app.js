@@ -380,7 +380,7 @@ app.post("/upload", checkAuthenticated, async (req, res) => {
         const resizedImagePath =
             __dirname + "/assets/uploads/resized/" + image.name;
 
-        console.log(image);
+        // console.log(image);
 
         await image.mv(imageDestinationPath).then(async () => {
             try {
