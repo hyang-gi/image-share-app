@@ -4,7 +4,8 @@
   "description": "The above linked application has been developed for the second semester final assignment for Programming for Digital Media module.",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon app.js"
+    "start": "node app.js",
+    "dev": "nodemon app.js"
   },
   "repository": {
     "type": "git",
