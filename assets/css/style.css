@@ -375,6 +375,10 @@ a {
   color: var(--primary);
 }
 
+.comment-added-date {
+  font-size: 0.75rem;
+}
+
 .comment-spacer {
   padding: 0.25rem;
 }

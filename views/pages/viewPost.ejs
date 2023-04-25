@@ -63,6 +63,9 @@
                                             href="/users/<%= comment.interaction_by %>/posts"><span>@<%=
                                                     comment.interaction_by %></span></a>
                                         <br>
+                                        <span class="comment-added-date">
+                                            <%= comment.timestamp %>
+                                        </span>
                                         <div class="comment-caption">
                                             <span>
                                                 <%= comment.interaction_text %>

@@ -348,6 +348,16 @@ app.get("/posts/:post_id", checkAuthenticated, async (req, res) => {
         const date = new Date(timestamp);
         const uploaded_on = date.toDateString();
 
+        const new_interactions = interactions.map(interaction => {
+            const timestamp = new Date(interaction.interaction_id).toDateString();
+            return {
+              ...interaction,
+              timestamp: timestamp
+            };
+          });
+
+        console.log({new_interactions});
+
         return res.render("templates/index.ejs", {
             page: "../pages/viewPost.ejs",
             title: "View Post",
@@ -356,7 +366,7 @@ app.get("/posts/:post_id", checkAuthenticated, async (req, res) => {
             isProfilePage: false,
             isUsersPage: false,
             image: img_results[0],
-            interactions: interactions,
+            interactions: new_interactions,
             liked_by_user,
             uploaded_on
         });
